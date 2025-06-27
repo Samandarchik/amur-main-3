@@ -6,8 +6,8 @@ import Link from "next/link"
 
 const categories = [
   {
-    key: "shashlik",
-    name: "Shashlik",
+    key: "shaslik",
+    name: "Shalik",
     icon: Beef,
     color: "bg-red-100 text-red-600",
     count: 12,
