@@ -47,11 +47,11 @@ export default function OrdersPage() {
     if (imageUrl.includes('localhost') || imageUrl.startsWith('http')) {
       // Replace localhost URL with demo.iqbo.uz and extract the path
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, '')
-      return `http://localhost:8080${urlPath}`
+      return `https://uzjoylar-yoqj.onrender.com${urlPath}`
     }
 
     // If it's just a path, prepend the base URL
-    return `http://localhost:8080${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`
+    return `https://uzjoylar-yoqj.onrender.com${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`
   }
 
   useEffect(() => {

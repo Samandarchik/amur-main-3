@@ -23,7 +23,7 @@ export function HeroSection() {
       <div
         className="absolute inset-0 opacity-100"
         style={{
-          backgroundImage: 'url(http://localhost:8080/uploads/home_1750339092.png)',
+          backgroundImage: 'url(https://uzjoylar-yoqj.onrender.com/uploads/home_1750339092.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
