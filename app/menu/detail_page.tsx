@@ -36,10 +36,10 @@ export default function FoodDetailPage({ foodId }: FoodDetailPageProps) {
 
     if (imageUrl.includes('localhost') || imageUrl.startsWith('http')) {
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, '')
-      return `https://uzjoylar-yoqj.onrender.com${urlPath}`
+      return `http://localhost:8080${urlPath}`
     }
 
-    return `https://uzjoylar-yoqj.onrender.com${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`
+    return `http://localhost:8080${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`
   }
 
   // Load food details
@@ -261,7 +261,7 @@ export default function FoodDetailPage({ foodId }: FoodDetailPageProps) {
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white h-12 text-lg"
               >
                 <Plus className="h-5 w-5 mr-2" />
-                Savatga qo'shish
+
               </Button>
             ) : (
               <div className="flex items-center justify-between w-full">
