@@ -1,6 +1,7 @@
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://uzjoylar-yoqj.onrender.com/api"
 // https://uzjoylar-yoqj.onrender.com
+
 // Get current language from localStorage (for non-hook contexts)
 const getCurrentLanguage = () => {
   if (typeof window === 'undefined') return 'uz'
@@ -42,6 +43,7 @@ export interface Food {
     ru: string
     en: string
   }
+  addToCart:string
   name: string
   descriptions: {
     uz: string

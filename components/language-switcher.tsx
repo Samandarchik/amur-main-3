@@ -9,8 +9,8 @@ export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage()
 
   const languages = [
-    { code: "uz", name: "O'zbek", flag: "🇺🇿" },
     { code: "ru", name: "Русский", flag: "🇷🇺" },
+    { code: "uz", name: "O'zbek", flag: "🇺🇿" },
     { code: "en", name: "English", flag: "🇺🇸" },
   ]
 
@@ -29,7 +29,7 @@ export function LanguageSwitcher() {
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => setLanguage(lang.code as "uz" | "ru" | "en")}
+            onClick={() => setLanguage(lang.code as "ru" | "uz" | "en")}
             className="gap-2 cursor-pointer"
           >
             <span>{lang.flag}</span>

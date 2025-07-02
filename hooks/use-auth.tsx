@@ -153,7 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await api.register({
         ...userData,
-        language: "uz",
+        language: "ru",
       })
 
       // Get user profile

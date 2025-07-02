@@ -1,15 +1,14 @@
+"use client";
 
-"use client"
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
-
-type Language = "uz" | "ru" | "en"
+type Language = "ru" | "uz" | "en";
 
 interface LanguageStore {
-  language: Language
-  setLanguage: (language: Language) => void
-  t: (key: string, replacements?: Record<string, string | number>) => string
+  language: Language;
+  setLanguage: (language: Language) => void;
+  t: (key: string, replacements?: Record<string, string | number>) => string;
 }
 
 const translations = {
@@ -17,7 +16,8 @@ const translations = {
     // Navigation
     "nav.home": "Bosh sahifa",
     "nav.menu": "Menyu",
-    "menu.subtitle": "Bizning keng assortimentimizdan o'zingizga yoqqan taomni tanlang",
+    "menu.subtitle":
+      "Bizning keng assortimentimizdan o'zingizga yoqqan taomni tanlang",
     "nav.checkout": "To'lov",
     "nav.orders": "Buyurtmalar",
     "nav.tables": "Stollar",
@@ -32,7 +32,8 @@ const translations = {
     "hero.orderNow": "Buyurtma berish",
     "hero.learnMore": "Batafsil",
     "hero.xizmat": "sifatli xizmat kafolati bilan",
-    "hero.national": "O'zbekistonning eng mazali milliy taomlarini buyurtma qiling.",
+    "hero.national":
+      "O'zbekistonning eng mazali milliy taomlarini buyurtma qiling.",
     "hero.minute": "daqiqa",
     "hero.map": "Joylashuv",
     "hero.phone": "Aloqa",
@@ -41,14 +42,18 @@ const translations = {
     "about.one": "Nega Amur Restorani?",
     "about.des": "30-40 daqiqa ichida sizning uyingizgacha yetkazib beramiz",
     "about.feature.fastDeliveryTitle": "Tez Yetkazib Berish",
-    "about.feature.fastDeliveryDesc": "30-40 daqiqa ichida sizning uyingizgacha yetkazib beramiz",
+    "about.feature.fastDeliveryDesc":
+      "30-40 daqiqa ichida sizning uyingizgacha yetkazib beramiz",
     "about.feature.qualityGuaranteeTitle": "Sifat Kafolati",
-    "about.feature.qualityGuaranteeDesc": "Faqat yangi va sifatli mahsulotlardan foydalanmiz",
+    "about.feature.qualityGuaranteeDesc":
+      "Faqat yangi va sifatli mahsulotlardan foydalanmiz",
     "about.feature.deliveryTitle": "Yetkazib Berish",
     "about.feature.deliveryDesc": "Sizni uyingizga yetkazib berish xizmati.",
     "about.feature.supportTitle": "10:00-00:00 Qo'llab-quvvatlash",
-    "about.feature.supportDesc": "Har qanday savolingiz bo'lsa, biz doimo yordam berishga tayyormiz",
-    "about.description" : "Biz mijozlarimizga eng yaxshi xizmat va sifatli taomlarni taqdim etishga intilamiz",
+    "about.feature.supportDesc":
+      "Har qanday savolingiz bo'lsa, biz doimo yordam berishga tayyormiz",
+    "about.description":
+      "Biz mijozlarimizga eng yaxshi xizmat va sifatli taomlarni taqdim etishga intilamiz",
 
     // Categories
     "categories.title": "Taom turlari",
@@ -72,7 +77,8 @@ const translations = {
     // Search & Sort
     "search.placeholder": "Taom qidirish...",
     "search.noResults": "Hech narsa topilmadi",
-    "search.noResultsDesc": "Qidiruv so'zini o'zgartiring yoki boshqa kategoriyani tanlang",
+    "search.noResultsDesc":
+      "Qidiruv so'zini o'zgartiring yoki boshqa kategoriyani tanlang",
     "sort.title": "Saralash",
     "sort.name": "Nom bo'yicha",
     "sort.priceLow": "Arzon narx",
@@ -90,8 +96,9 @@ const translations = {
     "cart.subtotal": "Oraliq jami",
     "cart.delivery": "Yetkazib berish",
     "cart.tax": "Soliq",
-    "cart_empty_title": "Savat bo'sh",
-    "cart_empty_description": "Buyurtma berish uchun avval taomlarni savatga qo'shing",
+    cart_empty_title: "Savat bo'sh",
+    cart_empty_description:
+      "Buyurtma berish uchun avval taomlarni savatga qo'shing",
 
     // Orders
     "orders.title": "Buyurtmalar",
@@ -108,7 +115,8 @@ const translations = {
     "orders.totalAmount": "Umumiy summa",
     "orders.loading_order_data": "Buyurtma ma'lumotlari yuklanmoqda...",
     "orders.order_not_found_title": "Buyurtma topilmadi",
-    "orders.invalid_order_id_description": "Kiritilgan buyurtma raqami noto'g'ri yoki mavjud emas",
+    "orders.invalid_order_id_description":
+      "Kiritilgan buyurtma raqami noto'g'ri yoki mavjud emas",
     "orders.search_again_button": "Qaytadan qidirish",
     "orders.order_details_title": "Buyurtma #{{orderId}}",
     "orders.order_composition_title": "Buyurtma tarkibi",
@@ -151,30 +159,34 @@ const translations = {
     "tables.reserved": "Bron qilingan",
     "tables.book": "Bron qilish",
     "tables.capacity": "Sig'im",
-    "table_not_found_title": "Stol topilmadi",
-    "table_not_found_description": "Kiritilgan stol ID si mavjud emas",
-    "table_data_load_error": "Stol ma'lumotlarini yuklashda xatolik yuz berdi",
-    "loading_table_data": "Stol ma'lumotlari yuklanmoqda...",
-    "invalid_table_id_description": "Kiritilgan stol ID si noto'g'ri yoki mavjud emas",
-    "back_to_homepage_button": "Bosh sahifaga qaytish",
-    "welcome_to_amur_restaurant": "Amur Restoraniga xush kelibsiz!",
-    "your_selected_table_info": "Siz tanlagan stol ma'lumotlari",
-    "your_table_badge": "Sizning stolingiz",
-    "table_details_title": "Stol ma'lumotlari",
-    "table_name_label": "Stol nomi",
-    "table_zone_label": "Zona",
-    "table_ready_title": "Stol tayyor!",
-    "table_ready_description": "Siz bu stoldan buyurtma bera olasiz. Taomlar to'g'ridan-to'g'ri bu stolga yetkaziladi.",
-    "place_order_button_table": "Buyurtma berish",
-    "back_to_homepage_button_general": "Bosh sahifaga qaytish",
-    "additional_info_title": "Qo'shimcha ma'lumot",
-    "additional_info_description": "Buyurtma bergandan so'ng, taomlaringiz to'g'ridan-to'g'ri bu stolga yetkaziladi. Buyurtma berish uchun yuqoridagi tugmani bosing.",
+    table_not_found_title: "Stol topilmadi",
+    table_not_found_description: "Kiritilgan stol ID si mavjud emas",
+    table_data_load_error: "Stol ma'lumotlarini yuklashda xatolik yuz berdi",
+    loading_table_data: "Stol ma'lumotlari yuklanmoqda...",
+    invalid_table_id_description:
+      "Kiritilgan stol ID si noto'g'ri yoki mavjud emas",
+    back_to_homepage_button: "Bosh sahifaga qaytish",
+    welcome_to_amur_restaurant: "Amur Restoraniga xush kelibsiz!",
+    your_selected_table_info: "Siz tanlagan stol ma'lumotlari",
+    your_table_badge: "Sizning stolingiz",
+    table_details_title: "Stol ma'lumotlari",
+    table_name_label: "Stol nomi",
+    table_zone_label: "Zona",
+    table_ready_title: "Stol tayyor!",
+    table_ready_description:
+      "Siz bu stoldan buyurtma bera olasiz. Taomlar to'g'ridan-to'g'ri bu stolga yetkaziladi.",
+    place_order_button_table: "Buyurtma berish",
+    back_to_homepage_button_general: "Bosh sahifaga qaytish",
+    additional_info_title: "Qo'shimcha ma'lumot",
+    additional_info_description:
+      "Buyurtma bergandan so'ng, taomlaringiz to'g'ridan-to'g'ri bu stolga yetkaziladi. Buyurtma berish uchun yuqoridagi tugmani bosing.",
 
     // Delivery (DastafkaPage specific)
     "delivery.service_title": "Yetkazib berish xizmati",
     "delivery.service_subtitle": "Tez va ishonchli yetkazib berish",
     "delivery.delivery_service_card_title": "Yetkazib berish xizmati",
-    "delivery.delivery_service_description": "Bizning yetkazib berish xizmatimiz orqali taomlaringizni tez va xavfsiz yetkazib beramiz.",
+    "delivery.delivery_service_description":
+      "Bizning yetkazib berish xizmatimiz orqali taomlaringizni tez va xavfsiz yetkazib beramiz.",
     "delivery.feature_fast_delivery": "30-40 daqiqa ichida yetkazib berish",
     "delivery.feature_area_coverage": "Samarqand bo'ylab xizmat",
     "delivery.feature_hot_delivery": "Issiq holda yetkazib berish",
@@ -236,7 +248,8 @@ const translations = {
     "seating.book_now": "Bron qilish",
     "seating.call": "Qo'ng'iroq",
     "seating.zal1.name": "Zal-1",
-    "seating.zal1.description": "Asosiy zal, oilaviy va do'stlar bilan dam olish uchun",
+    "seating.zal1.description":
+      "Asosiy zal, oilaviy va do'stlar bilan dam olish uchun",
     "seating.zal1.capacity": "20-30 kishi",
     "seating.zal2.name": "Zal-2",
     "seating.zal2.description": "Kichik tadbirlar va muhim uchrashuvlar uchun",
@@ -263,58 +276,68 @@ const translations = {
     currency: "so'm",
 
     // Checkout Page NEW translations
-    "place_order_heading": "Buyurtma berish",
-    "personal_info_title": "Shaxsiy ma'lumotlar",
-    "full_name_label": "To'liq ism *",
-    "phone_number_label": "Telefon raqam *",
-    "phone_number_readonly_tooltip": "Telefon raqamni o'zgartirib bo'lmaydi",
-    "email_label": "Email (ixtiyoriy)",
-    "delivery_type_title": "Yetkazib berish turi",
-    "delivery_option_delivery": "Yetkazib berish",
-    "delivery_option_delivery_description": "Sizning manzilingizga yetkazib beramiz",
-    "delivery_option_pickup": "O'zi olib ketish",
-    "delivery_option_pickup_description": "Restoranidan o'zingiz olib ketasiz",
-    "delivery_option_at_restaurant": "Restoranda",
-    "delivery_option_at_restaurant_description": "Restoran ichida iste'mol qilasiz",
-    "delivery_address_title": "Yetkazib berish manzili",
-    "address_label": "Manzil *",
-    "address_placeholder": "To'liq manzilingizni kiriting",
-    "getting_location_button": "Joylashuv aniqlanmoqda...",
-    "detect_location_button": "Joriy joylashuvni aniqlash",
-    "selected_table_title": "Tanlangan stol",
-    "selected_table_description": "Siz bu stoldan buyurtma berasiz. Taomlar to'g'ridan-to'g'ri bu stolga yetkaziladi.",
-    "payment_method_title": "To'lov usuli",
-    "payment_method_cash": "Naqd pul",
-    "payment_method_card": "Bank kartasi",
-    "payment_method_click": "Click",
-    "payment_method_payme": "Payme",
-    "special_instructions_title": "Qo'shimcha izohlar",
-    "special_instructions_placeholder": "Maxsus talablar yoki izohlar (ixtiyoriy)",
-    "order_summary_title": "Buyurtma xulosasi",
-    "food_price_label": "Taomlar narxi:",
-    "delivery_fee_label": "Yetkazib berish:",
-    "total_label": "Jami:",
-    "submitting_order_button": "Buyurtma berilmoqda...",
-    "login_to_order_button": "Avval tizimga kiring",
-    "place_order_button": "Buyurtma berish",
-    "order_confirmation_note": "Buyurtma bergandan so'ng, siz bilan bog'lanamiz",
-    "geolocation_not_supported_title": "Geolocation qo'llab-quvvatlanmaydi",
-    "geolocation_not_supported_description": "Brauzeringiz geolocation xizmatini qo'llab-quvvatlamaydi",
-    "location_detected_title": "Joylashuv aniqlandi",
-    "location_detected_description": "Sizning joylashuvingiz muvaffaqiyatli aniqlandi",
-    "location_detection_failed_title": "Joylashuvni aniqlab bo'lmadi",
-    "location_detection_failed_description": "Joylashuvni aniqlashda xatolik yuz berdi. Qo'lda kiriting.",
-    "order_created_title": "Buyurtma yaratildi! 🎉",
-    "order_created_description": "Buyurtma raqami: {{orderId}}. Taxminiy vaqt: {{estimatedTime}} daqiqa", // Supports interpolation
-    "error_occurred_title": "Xatolik yuz berdi",
-    "order_creation_failed_generic_description": "Buyurtma yaratishda xatolik yuz berdi. Qaytadan urinib ko'ring.",
-    "sum": "so'm", // Currency key for formatPrice
+    place_order_heading: "Buyurtma berish",
+    personal_info_title: "Shaxsiy ma'lumotlar",
+    full_name_label: "To'liq ism *",
+    phone_number_label: "Telefon raqam *",
+    phone_number_readonly_tooltip: "Telefon raqamni o'zgartirib bo'lmaydi",
+    email_label: "Email (ixtiyoriy)",
+    delivery_type_title: "Yetkazib berish turi",
+    delivery_option_delivery: "Yetkazib berish",
+    delivery_option_delivery_description:
+      "Sizning manzilingizga yetkazib beramiz",
+    delivery_option_pickup: "O'zi olib ketish",
+    delivery_option_pickup_description: "Restoranidan o'zingiz olib ketasiz",
+    delivery_option_at_restaurant: "Restoranda",
+    delivery_option_at_restaurant_description:
+      "Restoran ichida iste'mol qilasiz",
+    delivery_address_title: "Yetkazib berish manzili",
+    address_label: "Manzil *",
+    address_placeholder: "To'liq manzilingizni kiriting",
+    getting_location_button: "Joylashuv aniqlanmoqda...",
+    detect_location_button: "Joriy joylashuvni aniqlash",
+    selected_table_title: "Tanlangan stol",
+    selected_table_description:
+      "Siz bu stoldan buyurtma berasiz. Taomlar to'g'ridan-to'g'ri bu stolga yetkaziladi.",
+    payment_method_title: "To'lov usuli",
+    payment_method_cash: "Naqd pul",
+    payment_method_card: "Bank kartasi",
+    payment_method_click: "Click",
+    payment_method_payme: "Payme",
+    special_instructions_title: "Qo'shimcha izohlar",
+    special_instructions_placeholder:
+      "Maxsus talablar yoki izohlar (ixtiyoriy)",
+    order_summary_title: "Buyurtma xulosasi",
+    food_price_label: "Taomlar narxi:",
+    delivery_fee_label: "Yetkazib berish:",
+    total_label: "Jami:",
+    submitting_order_button: "Buyurtma berilmoqda...",
+    login_to_order_button: "Avval tizimga kiring",
+    place_order_button: "Buyurtma berish",
+    order_confirmation_note: "Buyurtma bergandan so'ng, siz bilan bog'lanamiz",
+    geolocation_not_supported_title: "Geolocation qo'llab-quvvatlanmaydi",
+    geolocation_not_supported_description:
+      "Brauzeringiz geolocation xizmatini qo'llab-quvvatlamaydi",
+    location_detected_title: "Joylashuv aniqlandi",
+    location_detected_description:
+      "Sizning joylashuvingiz muvaffaqiyatli aniqlandi",
+    location_detection_failed_title: "Joylashuvni aniqlab bo'lmadi",
+    location_detection_failed_description:
+      "Joylashuvni aniqlashda xatolik yuz berdi. Qo'lda kiriting.",
+    order_created_title: "Buyurtma yaratildi! 🎉",
+    order_created_description:
+      "Buyurtma raqami: {{orderId}}. Taxminiy vaqt: {{estimatedTime}} daqiqa", // Supports interpolation
+    error_occurred_title: "Xatolik yuz berdi",
+    order_creation_failed_generic_description:
+      "Buyurtma yaratishda xatolik yuz berdi. Qaytadan urinib ko'ring.",
+    sum: "so'm", // Currency key for formatPrice
   },
   ru: {
     // Navigation
     "nav.home": "Главная",
     "nav.menu": "Меню",
-    "menu.subtitle": "Выберите понравившееся блюдо из нашего широкого ассортимента",
+    "menu.subtitle":
+      "Выберите понравившееся блюдо из нашего широкого ассортимента",
     "nav.checkout": "Оплата",
     "nav.orders": "Заказы",
     "nav.tables": "Столы",
@@ -342,14 +365,18 @@ const translations = {
     //About
     "about.des": "Мы доставим вам домой в течение 30-40 минут.",
     "about.feature.fastDeliveryTitle": "Быстрая доставка",
-    "about.feature.fastDeliveryDesc": "Мы доставим к вам домой в течение 30-40 минут",
+    "about.feature.fastDeliveryDesc":
+      "Мы доставим к вам домой в течение 30-40 минут",
     "about.feature.qualityGuaranteeTitle": "Гарантия качества",
-    "about.feature.qualityGuaranteeDesc": "Используем только свежие и качественные продукты",
+    "about.feature.qualityGuaranteeDesc":
+      "Используем только свежие и качественные продукты",
     "about.feature.deliveryTitle": "Доставка",
     "about.feature.deliveryDesc": "Служба доставки к вашему дому.",
     "about.feature.supportTitle": "Поддержка 10:00-00:00",
-    "about.feature.supportDesc": "Если у вас есть вопросы, мы всегда готовы помочь",
-    "about.description" : "Мы стремимся предоставить нашим клиентам лучший сервис и качественную еду.",
+    "about.feature.supportDesc":
+      "Если у вас есть вопросы, мы всегда готовы помочь",
+    "about.description":
+      "Мы стремимся предоставить нашим клиентам лучший сервис и качественную еду.",
     "about.one": "Почему ресторан «Амур»?",
 
     // Featured
@@ -369,7 +396,8 @@ const translations = {
     // Search & Sort
     "search.placeholder": "Поиск блюд...",
     "search.noResults": "Ничего не найдено",
-    "search.noResultsDesc": "Измените поисковый запрос или выберите другую категорию",
+    "search.noResultsDesc":
+      "Измените поисковый запрос или выберите другую категорию",
     "sort.title": "Сортировка",
     "sort.name": "По названию",
     "sort.priceLow": "Сначала дешевые",
@@ -387,8 +415,9 @@ const translations = {
     "cart.subtotal": "Промежуточный итог",
     "cart.delivery": "Доставка",
     "cart.tax": "Налог",
-    "cart_empty_title": "Корзина пуста",
-    "cart_empty_description": "Чтобы сделать заказ, сначала добавьте блюда в корзину",
+    cart_empty_title: "Корзина пуста",
+    cart_empty_description:
+      "Чтобы сделать заказ, сначала добавьте блюда в корзину",
 
     // Orders
     "orders.title": "Заказы",
@@ -405,7 +434,8 @@ const translations = {
     "orders.totalAmount": "Общая сумма",
     "orders.loading_order_data": "Загрузка данных заказа...",
     "orders.order_not_found_title": "Заказ не найден",
-    "orders.invalid_order_id_description": "Введенный номер заказа неверен или не существует",
+    "orders.invalid_order_id_description":
+      "Введенный номер заказа неверен или не существует",
     "orders.search_again_button": "Поиск снова",
     "orders.order_details_title": "Заказ #{{orderId}}",
     "orders.order_composition_title": "Состав заказа",
@@ -448,30 +478,34 @@ const translations = {
     "tables.reserved": "Забронирован",
     "tables.book": "Забронировать",
     "tables.capacity": "Вместимость",
-    "table_not_found_title": "Стол не найден",
-    "table_not_found_description": "Введенный ID стола не существует",
-    "table_data_load_error": "Произошла ошибка при загрузке данных стола",
-    "loading_table_data": "Загрузка данных стола...",
-    "invalid_table_id_description": "Введенный ID стола неверен или не существует",
-    "back_to_homepage_button": "Вернуться на главную страницу",
-    "welcome_to_amur_restaurant": "Добро пожаловать в ресторан Амур!",
-    "your_selected_table_info": "Информация о выбранном вами столе",
-    "your_table_badge": "Ваш стол",
-    "table_details_title": "Детали стола",
-    "table_name_label": "Название стола",
-    "table_zone_label": "Зона",
-    "table_ready_title": "Стол готов!",
-    "table_ready_description": "Вы можете сделать заказ с этого стола. Блюда будут доставлены прямо к этому столу.",
-    "place_order_button_table": "Разместить заказ",
-    "back_to_homepage_button_general": "Вернуться на главную страницу",
-    "additional_info_title": "Дополнительная информация",
-    "additional_info_description": "После оформления заказа ваши блюда будут доставлены прямо к этому столу. Нажмите кнопку выше, чтобы сделать заказ.",
+    table_not_found_title: "Стол не найден",
+    table_not_found_description: "Введенный ID стола не существует",
+    table_data_load_error: "Произошла ошибка при загрузке данных стола",
+    loading_table_data: "Загрузка данных стола...",
+    invalid_table_id_description:
+      "Введенный ID стола неверен или не существует",
+    back_to_homepage_button: "Вернуться на главную страницу",
+    welcome_to_amur_restaurant: "Добро пожаловать в ресторан Амур!",
+    your_selected_table_info: "Информация о выбранном вами столе",
+    your_table_badge: "Ваш стол",
+    table_details_title: "Детали стола",
+    table_name_label: "Название стола",
+    table_zone_label: "Зона",
+    table_ready_title: "Стол готов!",
+    table_ready_description:
+      "Вы можете сделать заказ с этого стола. Блюда будут доставлены прямо к этому столу.",
+    place_order_button_table: "Разместить заказ",
+    back_to_homepage_button_general: "Вернуться на главную страницу",
+    additional_info_title: "Дополнительная информация",
+    additional_info_description:
+      "После оформления заказа ваши блюда будут доставлены прямо к этому столу. Нажмите кнопку выше, чтобы сделать заказ.",
 
     // Delivery (DastafkaPage specific)
     "delivery.service_title": "Служба доставки",
     "delivery.service_subtitle": "Быстрая и надежная доставка",
     "delivery.delivery_service_card_title": "Служба доставки",
-    "delivery.delivery_service_description": "Наша служба доставки быстро и безопасно доставит ваши блюда.",
+    "delivery.delivery_service_description":
+      "Наша служба доставки быстро и безопасно доставит ваши блюда.",
     "delivery.feature_fast_delivery": "Доставка в течение 30-40 минут",
     "delivery.feature_area_coverage": "Обслуживание по Самарканду",
     "delivery.feature_hot_delivery": "Доставка горячей еды",
@@ -533,7 +567,8 @@ const translations = {
     "seating.book_now": "Забронировать",
     "seating.call": "Позвонить",
     "seating.zal1.name": "Зал-1",
-    "seating.zal1.description": "Основной зал для семейного отдыха и встреч с друзьями",
+    "seating.zal1.description":
+      "Основной зал для семейного отдыха и встреч с друзьями",
     "seating.zal1.capacity": "20-30 человек",
     "seating.zal2.name": "Зал-2",
     "seating.zal2.description": "Для небольших мероприятий и важных встреч",
@@ -560,52 +595,59 @@ const translations = {
     currency: "сум",
 
     // Checkout Page NEW translations
-    "place_order_heading": "Оформление заказа",
-    "personal_info_title": "Личная информация",
-    "full_name_label": "Полное имя *",
-    "phone_number_label": "Номер телефона *",
-    "phone_number_readonly_tooltip": "Номер телефона не может быть изменен",
-    "email_label": "Электронная почта (необязательно)",
-    "delivery_type_title": "Тип доставки",
-    "delivery_option_delivery": "Доставка",
-    "delivery_option_delivery_description": "Мы доставим на ваш адрес",
-    "delivery_option_pickup": "Самовывоз",
-    "delivery_option_pickup_description": "Вы заберете из ресторана",
-    "delivery_option_at_restaurant": "В ресторане",
-    "delivery_option_at_restaurant_description": "Вы будете есть внутри ресторана",
-    "delivery_address_title": "Адрес доставки",
-    "address_label": "Адрес *",
-    "address_placeholder": "Введите ваш полный адрес",
-    "getting_location_button": "Определение местоположения...",
-    "detect_location_button": "Определить текущее местоположение",
-    "selected_table_title": "Выбранный стол",
-    "selected_table_description": "Вы будете заказывать с этого стола. Блюда будут доставлены прямо к этому столу.",
-    "payment_method_title": "Способ оплаты",
-    "payment_method_cash": "Наличные",
-    "payment_method_card": "Банковская карта",
-    "payment_method_click": "Click",
-    "payment_method_payme": "Payme",
-    "special_instructions_title": "Дополнительные примечания",
-    "special_instructions_placeholder": "Особые пожелания или комментарии (необязательно)",
-    "order_summary_title": "Сводка заказа",
-    "food_price_label": "Стоимость блюд:",
-    "delivery_fee_label": "Доставка:",
-    "total_label": "Итого:",
-    "submitting_order_button": "Размещение заказа...",
-    "login_to_order_button": "Пожалуйста, войдите сначала",
-    "place_order_button": "Разместить заказ",
-    "order_confirmation_note": "После оформления заказа мы свяжемся с вами",
-    "geolocation_not_supported_title": "Геолокация не поддерживается",
-    "geolocation_not_supported_description": "Ваш браузер не поддерживает службу геолокации",
-    "location_detected_title": "Местоположение определено",
-    "location_detected_description": "Ваше местоположение успешно определено",
-    "location_detection_failed_title": "Не удалось определить местоположение",
-    "location_detection_failed_description": "Произошла ошибка при определении местоположения. Введите вручную.",
-    "order_created_title": "Заказ создан! 🎉",
-    "order_created_description": "Номер заказа: {{orderId}}. Приблизительное время: {{estimatedTime}} минут",
-    "error_occurred_title": "Произошла ошибка",
-    "order_creation_failed_generic_description": "Произошла ошибка при создании заказа. Пожалуйста, попробуйте еще раз.",
-    "sum": "сум",
+    place_order_heading: "Оформление заказа",
+    personal_info_title: "Личная информация",
+    full_name_label: "Полное имя *",
+    phone_number_label: "Номер телефона *",
+    phone_number_readonly_tooltip: "Номер телефона не может быть изменен",
+    email_label: "Электронная почта (необязательно)",
+    delivery_type_title: "Тип доставки",
+    delivery_option_delivery: "Доставка",
+    delivery_option_delivery_description: "Мы доставим на ваш адрес",
+    delivery_option_pickup: "Самовывоз",
+    delivery_option_pickup_description: "Вы заберете из ресторана",
+    delivery_option_at_restaurant: "В ресторане",
+    delivery_option_at_restaurant_description:
+      "Вы будете есть внутри ресторана",
+    delivery_address_title: "Адрес доставки",
+    address_label: "Адрес *",
+    address_placeholder: "Введите ваш полный адрес",
+    getting_location_button: "Определение местоположения...",
+    detect_location_button: "Определить текущее местоположение",
+    selected_table_title: "Выбранный стол",
+    selected_table_description:
+      "Вы будете заказывать с этого стола. Блюда будут доставлены прямо к этому столу.",
+    payment_method_title: "Способ оплаты",
+    payment_method_cash: "Наличные",
+    payment_method_card: "Банковская карта",
+    payment_method_click: "Click",
+    payment_method_payme: "Payme",
+    special_instructions_title: "Дополнительные примечания",
+    special_instructions_placeholder:
+      "Особые пожелания или комментарии (необязательно)",
+    order_summary_title: "Сводка заказа",
+    food_price_label: "Стоимость блюд:",
+    delivery_fee_label: "Доставка:",
+    total_label: "Итого:",
+    submitting_order_button: "Размещение заказа...",
+    login_to_order_button: "Пожалуйста, войдите сначала",
+    place_order_button: "Разместить заказ",
+    order_confirmation_note: "После оформления заказа мы свяжемся с вами",
+    geolocation_not_supported_title: "Геолокация не поддерживается",
+    geolocation_not_supported_description:
+      "Ваш браузер не поддерживает службу геолокации",
+    location_detected_title: "Местоположение определено",
+    location_detected_description: "Ваше местоположение успешно определено",
+    location_detection_failed_title: "Не удалось определить местоположение",
+    location_detection_failed_description:
+      "Произошла ошибка при определении местоположения. Введите вручную.",
+    order_created_title: "Заказ создан! 🎉",
+    order_created_description:
+      "Номер заказа: {{orderId}}. Приблизительное время: {{estimatedTime}} минут",
+    error_occurred_title: "Произошла ошибка",
+    order_creation_failed_generic_description:
+      "Произошла ошибка при создании заказа. Пожалуйста, попробуйте еще раз.",
+    sum: "сум",
   },
   en: {
     // Navigation
@@ -653,13 +695,13 @@ const translations = {
     // Search & Sort
     "search.placeholder": "Search foods...",
     "search.noResults": "No results found",
-    "search.noResultsDesc": "Change your search term or select a different category",
+    "search.noResultsDesc":
+      "Change your search term or select a different category",
     "sort.title": "Sort by",
     "sort.name": "Name",
     "sort.priceLow": "Price: Low to High",
     "sort.priceHigh": "Price: High to Low",
     "sort.rating": "Rating",
-
 
     // Cart
     "cart.title": "Shopping Cart",
@@ -672,8 +714,8 @@ const translations = {
     "cart.subtotal": "Subtotal",
     "cart.delivery": "Delivery",
     "cart.tax": "Tax",
-    "cart_empty_title": "Your cart is empty",
-    "cart_empty_description": "To place an order, first add dishes to your cart",
+    cart_empty_title: "Your cart is empty",
+    cart_empty_description: "To place an order, first add dishes to your cart",
 
     // Orders
     "orders.title": "Orders",
@@ -690,7 +732,8 @@ const translations = {
     "orders.totalAmount": "Total Amount",
     "orders.loading_order_data": "Loading order data...",
     "orders.order_not_found_title": "Order not found",
-    "orders.invalid_order_id_description": "The entered order number is incorrect or does not exist",
+    "orders.invalid_order_id_description":
+      "The entered order number is incorrect or does not exist",
     "orders.search_again_button": "Search again",
     "orders.order_details_title": "Order #{{orderId}}",
     "orders.order_composition_title": "Order Composition",
@@ -733,30 +776,34 @@ const translations = {
     "tables.reserved": "Reserved",
     "tables.book": "Book",
     "tables.capacity": "Capacity",
-    "table_not_found_title": "Table not found",
-    "table_not_found_description": "The entered table ID does not exist",
-    "table_data_load_error": "An error occurred while loading table data",
-    "loading_table_data": "Loading table data...",
-    "invalid_table_id_description": "The entered table ID is incorrect or does not exist",
-    "back_to_homepage_button": "Back to Homepage",
-    "welcome_to_amur_restaurant": "Welcome to Amur Restaurant!",
-    "your_selected_table_info": "Information about your selected table",
-    "your_table_badge": "Your table",
-    "table_details_title": "Table Details",
-    "table_name_label": "Table Name",
-    "table_zone_label": "Zone",
-    "table_ready_title": "Table is ready!",
-    "table_ready_description": "You can order from this table. Dishes will be delivered directly to this table.",
-    "place_order_button_table": "Place Order",
-    "back_to_homepage_button_general": "Back to Homepage",
-    "additional_info_title": "Additional Information",
-    "additional_info_description": "After placing the order, your dishes will be delivered directly to this table. Click the button above to place an order.",
+    table_not_found_title: "Table not found",
+    table_not_found_description: "The entered table ID does not exist",
+    table_data_load_error: "An error occurred while loading table data",
+    loading_table_data: "Loading table data...",
+    invalid_table_id_description:
+      "The entered table ID is incorrect or does not exist",
+    back_to_homepage_button: "Back to Homepage",
+    welcome_to_amur_restaurant: "Welcome to Amur Restaurant!",
+    your_selected_table_info: "Information about your selected table",
+    your_table_badge: "Your table",
+    table_details_title: "Table Details",
+    table_name_label: "Table Name",
+    table_zone_label: "Zone",
+    table_ready_title: "Table is ready!",
+    table_ready_description:
+      "You can order from this table. Dishes will be delivered directly to this table.",
+    place_order_button_table: "Place Order",
+    back_to_homepage_button_general: "Back to Homepage",
+    additional_info_title: "Additional Information",
+    additional_info_description:
+      "After placing the order, your dishes will be delivered directly to this table. Click the button above to place an order.",
 
     // Delivery (DastafkaPage specific)
     "delivery.service_title": "Delivery Service",
     "delivery.service_subtitle": "Fast and reliable delivery",
     "delivery.delivery_service_card_title": "Delivery Service",
-    "delivery.delivery_service_description": "Our delivery service will deliver your dishes quickly and safely.",
+    "delivery.delivery_service_description":
+      "Our delivery service will deliver your dishes quickly and safely.",
     "delivery.feature_fast_delivery": "Delivery within 30-40 minutes",
     "delivery.feature_area_coverage": "Service throughout Samarkand",
     "delivery.feature_hot_delivery": "Hot delivery",
@@ -789,7 +836,8 @@ const translations = {
 
     // About
     "about.title": "About Us",
-    "about.description": "We specialize in quality food and professional service",
+    "about.description":
+      "We specialize in quality food and professional service",
     "about.fastDelivery": "Fast Delivery",
     "about.fastDeliveryDesc": "We deliver in 30 minutes",
     "about.gpsTracking": "GPS Tracking",
@@ -799,13 +847,16 @@ const translations = {
     "about.one": "Why Amur Restaurant?",
     "about.des": "We will deliver to your home within 30-40 minutes.",
     "about.feature.fastDeliveryTitle": "Fast Delivery",
-    "about.feature.fastDeliveryDesc": "We will deliver to your home within 30-40 minutes.",
+    "about.feature.fastDeliveryDesc":
+      "We will deliver to your home within 30-40 minutes.",
     "about.feature.qualityGuaranteeTitle": "Quality Guarantee",
-    "about.feature.qualityGuaranteeDesc": "We use only fresh and high-quality products.",
+    "about.feature.qualityGuaranteeDesc":
+      "We use only fresh and high-quality products.",
     "about.feature.deliveryTitle": "Delivery Service",
     "about.feature.deliveryDesc": "Delivery service to your home.",
     "about.feature.supportTitle": "10:00-00:00 Support",
-    "about.feature.supportDesc": "If you have any questions, we are always ready to help.",
+    "about.feature.supportDesc":
+      "If you have any questions, we are always ready to help.",
 
     // Common
     "common.loading": "Loading...",
@@ -865,67 +916,76 @@ const translations = {
     currency: "UZS",
 
     // Checkout Page NEW translations
-    "place_order_heading": "Place Order",
-    "personal_info_title": "Personal Information",
-    "full_name_label": "Full Name *",
-    "phone_number_label": "Phone Number *",
-    "phone_number_readonly_tooltip": "Phone number cannot be changed",
-    "email_label": "Email (optional)",
-    "delivery_type_title": "Delivery Type",
-    "delivery_option_delivery": "Delivery",
-    "delivery_option_delivery_description": "We deliver to your address",
-    "delivery_option_pickup": "Pickup",
-    "delivery_option_pickup_description": "You pick up from the restaurant",
-    "delivery_option_at_restaurant": "At the Restaurant",
-    "delivery_option_at_restaurant_description": "You will dine inside the restaurant",
-    "delivery_address_title": "Delivery Address",
-    "address_label": "Address *",
-    "address_placeholder": "Enter your full address",
-    "getting_location_button": "Detecting location...",
-    "detect_location_button": "Detect Current Location",
-    "selected_table_title": "Selected Table",
-    "selected_table_description": "You will order from this table. Dishes will be delivered directly to this table.",
-    "payment_method_title": "Payment Method",
-    "payment_method_cash": "Cash",
-    "payment_method_card": "Bank Card",
-    "payment_method_click": "Click",
-    "payment_method_payme": "Payme",
-    "special_instructions_title": "Special Instructions",
-    "special_instructions_placeholder": "Special requests or comments (optional)",
-    "order_summary_title": "Order Summary",
-    "food_price_label": "Food Price:",
-    "delivery_fee_label": "Delivery:",
-    "total_label": "Total:",
-    "submitting_order_button": "Submitting Order...",
-    "login_to_order_button": "Please log in first",
-    "place_order_button": "Place Order",
-    "order_confirmation_note": "After placing the order, we will contact you",
-    "geolocation_not_supported_title": "Geolocation not supported",
-    "geolocation_not_supported_description": "Your browser does not support geolocation service",
-    "location_detected_title": "Location detected",
-    "location_detected_description": "Your location was successfully detected",
-    "location_detection_failed_title": "Failed to detect location",
-    "location_detection_failed_description": "An error occurred while detecting location. Please enter manually.",
-    "order_created_title": "Order created! 🎉",
-    "order_created_description": "Order number: {{orderId}}. Estimated time: {{estimatedTime}} minutes",
-    "error_occurred_title": "An error occurred",
-    "order_creation_failed_generic_description": "An error occurred while creating the order. Please try again.",
-    "sum": "UZS",
+    place_order_heading: "Place Order",
+    personal_info_title: "Personal Information",
+    full_name_label: "Full Name *",
+    phone_number_label: "Phone Number *",
+    phone_number_readonly_tooltip: "Phone number cannot be changed",
+    email_label: "Email (optional)",
+    delivery_type_title: "Delivery Type",
+    delivery_option_delivery: "Delivery",
+    delivery_option_delivery_description: "We deliver to your address",
+    delivery_option_pickup: "Pickup",
+    delivery_option_pickup_description: "You pick up from the restaurant",
+    delivery_option_at_restaurant: "At the Restaurant",
+    delivery_option_at_restaurant_description:
+      "You will dine inside the restaurant",
+    delivery_address_title: "Delivery Address",
+    address_label: "Address *",
+    address_placeholder: "Enter your full address",
+    getting_location_button: "Detecting location...",
+    detect_location_button: "Detect Current Location",
+    selected_table_title: "Selected Table",
+    selected_table_description:
+      "You will order from this table. Dishes will be delivered directly to this table.",
+    payment_method_title: "Payment Method",
+    payment_method_cash: "Cash",
+    payment_method_card: "Bank Card",
+    payment_method_click: "Click",
+    payment_method_payme: "Payme",
+    special_instructions_title: "Special Instructions",
+    special_instructions_placeholder: "Special requests or comments (optional)",
+    order_summary_title: "Order Summary",
+    food_price_label: "Food Price:",
+    delivery_fee_label: "Delivery:",
+    total_label: "Total:",
+    submitting_order_button: "Submitting Order...",
+    login_to_order_button: "Please log in first",
+    place_order_button: "Place Order",
+    order_confirmation_note: "After placing the order, we will contact you",
+    geolocation_not_supported_title: "Geolocation not supported",
+    geolocation_not_supported_description:
+      "Your browser does not support geolocation service",
+    location_detected_title: "Location detected",
+    location_detected_description: "Your location was successfully detected",
+    location_detection_failed_title: "Failed to detect location",
+    location_detection_failed_description:
+      "An error occurred while detecting location. Please enter manually.",
+    order_created_title: "Order created! 🎉",
+    order_created_description:
+      "Order number: {{orderId}}. Estimated time: {{estimatedTime}} minutes",
+    error_occurred_title: "An error occurred",
+    order_creation_failed_generic_description:
+      "An error occurred while creating the order. Please try again.",
+    sum: "UZS",
   },
-}
+};
 
 export const useLanguage = create<LanguageStore>()(
   persist(
     (set, get) => ({
-      language: "uz",
+      language: "ru",
       setLanguage: (language) => set({ language }),
       t: (key, replacements?: Record<string, string | number>) => {
-        const { language } = get()
+        const { language } = get();
         let translation = (translations as any)[language][key] || key;
 
         if (replacements) {
           for (const [placeholder, value] of Object.entries(replacements)) {
-            translation = translation.replace(new RegExp(`{{${placeholder}}}`, 'g'), String(value));
+            translation = translation.replace(
+              new RegExp(`{{${placeholder}}}`, "g"),
+              String(value)
+            );
           }
         }
         return translation;
@@ -933,6 +993,6 @@ export const useLanguage = create<LanguageStore>()(
     }),
     {
       name: "language-storage",
-    },
-  ),
-)
+    }
+  )
+);

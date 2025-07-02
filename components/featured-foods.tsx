@@ -77,11 +77,11 @@ export function RestaurantSeating() {
           <p className="text-gray-600 max-w-2xl mx-auto">{t("seating.subtitle")}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
           {seatingAreas.map((area) => (
             <Card key={area.id} className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative">
-                <img src={area.imageUrl} alt={t(area.nameKey)} className="w-full h-48 object-cover" />
+                <img src={area.imageUrl} alt={t(area.nameKey)} className="w-full h-80 object-cover" />
                 {area.isPopular && <Badge className="absolute top-2 left-2 bg-orange-500">{t("seating.popular")}</Badge>}
                 {area.priceRangeKey !== "seating.price.free" && <Badge className="absolute top-2 right-2 bg-blue-500">{t("seating.premium")}</Badge>}
               </div>
