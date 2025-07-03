@@ -20,12 +20,14 @@ import {
   Filter,
   Minus,
   ShoppingCart,
+  Eye,
 } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { useSearchParams } from "next/navigation";
 import { api, type Food, type Category } from "@/lib/api";
 import { useLanguage } from "@/hooks/use-language";
 import { CartSheet } from "@/components/cart/cart-sheet";
+import { FoodDetailModal } from "./detail_page";
 
 export default function MenuPage() {
   const [foods, setFoods] = useState<Food[]>([]);
@@ -36,6 +38,11 @@ export default function MenuPage() {
   const [sortBy, setSortBy] = useState("id");
   const [isLoading, setIsLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("");
+  
+  // Detail Modal States
+  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  
   const { addItem, removeItem, items } = useCart();
   const { language, t } = useLanguage();
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -70,6 +77,18 @@ export default function MenuPage() {
     return `https://uzjoylar-yoqj.onrender.com${
       imageUrl.startsWith("/") ? imageUrl : "/" + imageUrl
     }`;
+  };
+
+  // Open food detail modal
+  const handleViewDetails = (food: Food) => {
+    setSelectedFood(food);
+    setIsDetailModalOpen(true);
+  };
+
+  // Close food detail modal
+  const handleCloseDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setSelectedFood(null);
   };
 
   // Load initial data
@@ -356,12 +375,23 @@ export default function MenuPage() {
                         <img
                           src={getImageUrl(food.imageUrl)}
                           alt={food.name}
-                          className="w-full h-48 object-cover"
+                          className="w-full h-48 object-cover cursor-pointer"
+                          onClick={() => handleViewDetails(food)}
                           onError={(e) => {
                             e.currentTarget.src =
                               "/placeholder.svg?height=200&width=300";
                           }}
                         />
+
+                        {/* View Details Button Overlay */}
+                        <Button
+                          size="icon"
+                          variant="secondary"
+                          className="absolute top-2 right-2 rounded-full bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => handleViewDetails(food)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
 
                         {food.is_popular && (
                           <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
@@ -383,7 +413,10 @@ export default function MenuPage() {
                       </div>
 
                       <CardContent className="p-4">
-                        <h3 className="font-semibold text-lg mb-2 line-clamp-1">
+                        <h3 
+                          className="font-semibold text-lg mb-2 line-clamp-1 cursor-pointer hover:text-green-600"
+                          onClick={() => handleViewDetails(food)}
+                        >
                           {food.name}
                         </h3>
                         <p className="text-gray-600 text-sm mb-3 line-clamp-2">
@@ -484,6 +517,13 @@ export default function MenuPage() {
 
       {/* Cart Sheet */}
       <CartSheet open={isCartOpen} onOpenChange={setIsCartOpen} />
+
+      {/* Food Detail Modal */}
+      <FoodDetailModal
+        food={selectedFood}
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseDetailModal}
+      />
     </div>
   );
 }
