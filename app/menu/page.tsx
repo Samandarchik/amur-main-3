@@ -88,7 +88,7 @@ export default function MenuPage() {
         // Load foods
         const foodsData = await api.getFoods({
           page: 1,
-          limit: 100,
+          limit: 200,
         });
         setFoods(foodsData.foods);
         setFilteredFoods(foodsData.foods);
@@ -365,7 +365,7 @@ export default function MenuPage() {
 
                         {food.is_popular && (
                           <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                            NEW
+                            Popular
                           </Badge>
                         )}
                         {food.discount > 0 && (

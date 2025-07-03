@@ -4,17 +4,17 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://uzjoylar-yoqj.o
 
 // Get current language from localStorage (for non-hook contexts)
 const getCurrentLanguage = () => {
-  if (typeof window === 'undefined') return 'uz'
+  if (typeof window === 'undefined') return 'ru'
   try {
     const stored = localStorage.getItem('language-storage')
     if (stored) {
       const parsed = JSON.parse(stored)
-      return parsed.state?.language || 'uz'
+      return parsed.state?.language || 'ru'
     }
   } catch {
     // fallback if parsing fails
   }
-  return 'uz'
+  return 'ru'
 }
 
 // API response types
