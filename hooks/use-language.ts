@@ -284,6 +284,9 @@ const translations = {
     email_label: "Email (ixtiyoriy)",
     delivery_type_title: "Yetkazib berish turi",
     delivery_option_delivery: "Yetkazib berish",
+    service_charge_label: "Xizmat haqi:",
+    view_menu_button: "Menyuni ko'rish",
+    service_charge_note:"Xizmat haqi 10% ni tashkil qiladi",
     delivery_option_delivery_description:
       "Sizning manzilingizga yetkazib beramiz",
     delivery_option_pickup: "O'zi olib ketish",
@@ -645,6 +648,9 @@ const translations = {
     order_created_description:
       "Номер заказа: {{orderId}}. Приблизительное время: {{estimatedTime}} минут",
     error_occurred_title: "Произошла ошибка",
+    service_charge_label : "Сервисный сбор:",
+    view_menu_button: "Посмотреть меню",
+    service_charge_note: "Сервисный сбор составляет 10%.",
     order_creation_failed_generic_description:
       "Произошла ошибка при создании заказа. Пожалуйста, попробуйте еще раз.",
     sum: "сум",
@@ -946,6 +952,9 @@ const translations = {
     special_instructions_title: "Special Instructions",
     special_instructions_placeholder: "Special requests or comments (optional)",
     order_summary_title: "Order Summary",
+    service_charge_label: "Service Charge:",
+    service_charge_note: "Service charge is 10%.",
+    view_menu_button: "View Menu",
     food_price_label: "Food Price:",
     delivery_fee_label: "Delivery:",
     total_label: "Total:",

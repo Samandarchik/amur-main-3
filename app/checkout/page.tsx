@@ -1,5 +1,3 @@
-
-
 "use client"
 
 import type React from "react"
@@ -92,7 +90,8 @@ export default function CheckoutPage() {
   }
 
   const deliveryFee = deliveryType === "delivery" ? 5000 : 0
-  const finalTotal = total + deliveryFee
+  const serviceCharge = deliveryType === "atTheRestaurant" ? Math.round(total * 0.1) : 0
+  const finalTotal = total + deliveryFee + serviceCharge
 
   const getCurrentLocation = () => {
     setIsGettingLocation(true)
@@ -299,6 +298,9 @@ export default function CheckoutPage() {
                         <span className="font-medium">{t("delivery_option_at_restaurant")}</span> {/* "Restoranda" */}
                       </div>
                       <p className="text-sm text-gray-500 mt-1">{t("delivery_option_at_restaurant_description")}</p> {/* "Restoran ichida iste'mol qilasiz" */}
+                      <p className="text-sm text-orange-600 mt-1 font-medium">
+                        {t("service_charge_note")} {/* "10% xizmat haqi qo'shiladi" */}
+                      </p>
                     </Label>
                   </div>
                 </RadioGroup>
@@ -506,6 +508,12 @@ export default function CheckoutPage() {
                     <div className="flex justify-between text-sm">
                       <span>{t("delivery_fee_label")}</span> {/* "Yetkazib berish:" */}
                       <span>{formatPrice(deliveryFee)}</span>
+                    </div>
+                  )}
+                  {deliveryType === "atTheRestaurant" && (
+                    <div className="flex justify-between text-sm">
+                      <span>{t("service_charge_label")}</span> {/* "Xizmat haqi (10%):" */}
+                      <span>{formatPrice(serviceCharge)}</span>
                     </div>
                   )}
                   <Separator />
