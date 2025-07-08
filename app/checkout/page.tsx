@@ -67,6 +67,13 @@ export default function CheckoutPage() {
     }
   }, [])
 
+  // Reset delivery type if preSelectedTable becomes null
+  useEffect(() => {
+    if (!preSelectedTable && deliveryType === "atTheRestaurant") {
+      setDeliveryType("delivery")
+    }
+  }, [preSelectedTable, deliveryType])
+
   // Check authentication on mount
   useEffect(() => {
     if (!isAuthenticated) {
@@ -290,19 +297,21 @@ export default function CheckoutPage() {
                       <p className="text-sm text-gray-500 mt-1">{t("delivery_option_pickup_description")}</p> {/* "Restoranidan o'zingiz olib ketasiz" */}
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2 p-4 border rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                    <RadioGroupItem value="atTheRestaurant" id="restaurant" />
-                    <Label htmlFor="restaurant" className="flex-1 cursor-pointer">
-                      <div className="flex items-center gap-2">
-                        <Utensils className="h-4 w-4" />
-                        <span className="font-medium">{t("delivery_option_at_restaurant")}</span> {/* "Restoranda" */}
-                      </div>
-                      <p className="text-sm text-gray-500 mt-1">{t("delivery_option_at_restaurant_description")}</p> {/* "Restoran ichida iste'mol qilasiz" */}
-                      <p className="text-sm text-orange-600 mt-1 font-medium">
-                        {t("service_charge_note")} {/* "10% xizmat haqi qo'shiladi" */}
-                      </p>
-                    </Label>
-                  </div>
+                  {preSelectedTable && (
+                    <div className="flex items-center space-x-2 p-4 border rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                      <RadioGroupItem value="atTheRestaurant" id="restaurant" />
+                      <Label htmlFor="restaurant" className="flex-1 cursor-pointer">
+                        <div className="flex items-center gap-2">
+                          <Utensils className="h-4 w-4" />
+                          <span className="font-medium">{t("delivery_option_at_restaurant")}</span> {/* "Restoranda" */}
+                        </div>
+                        <p className="text-sm text-gray-500 mt-1">{t("delivery_option_at_restaurant_description")}</p> {/* "Restoran ichida iste'mol qilasiz" */}
+                        <p className="text-sm text-orange-600 mt-1 font-medium">
+                          {t("service_charge_note")} {/* "10% xizmat haqi qo'shiladi" */}
+                        </p>
+                      </Label>
+                    </div>
+                  )}
                 </RadioGroup>
               </CardContent>
             </Card>
@@ -378,7 +387,10 @@ export default function CheckoutPage() {
             )}
 
             {/* Table Selection - Pre-selected */}
-            {deliveryType === "atTheRestaurant" && preSelectedTable && (
+            {deliveryType === "atTheRestaurant" && 
+             preSelectedTable && 
+             preSelectedTable.zone && 
+             preSelectedTable.name && (
               <Card className="animate-fade-in-up animation-delay-600">
                 <CardHeader>
                   <CardTitle>{t("selected_table_title")}</CardTitle> {/* "Tanlangan stol" */}
@@ -476,14 +488,6 @@ export default function CheckoutPage() {
                     key={item.id}
                     className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded transition-colors duration-200"
                   >
-                    {/* <img
-                      src={item.imageUrl ? `http://https://uzjoylar-yoqj.onrender.com/${item.imageUrl}` : "/placeholder.svg"}
-                      alt={item.name}
-                      className="w-12 h-12 object-cover rounded-md"
-
-                    /> */}
-
-
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium text-sm">{item.name}</h4>
                       <p className="text-xs text-gray-500">{item.category}</p>
