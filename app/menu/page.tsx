@@ -71,10 +71,10 @@ export default function MenuPage() {
 
     if (imageUrl.includes("localhost") || imageUrl.startsWith("http")) {
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, "");
-      return `https://uzjoylar-yoqj.onrender.com${urlPath}`;
+      return `http://localhost:8080${urlPath}`;
     }
 
-    return `https://uzjoylar-yoqj.onrender.com${
+    return `http://localhost:8080${
       imageUrl.startsWith("/") ? imageUrl : "/" + imageUrl
     }`;
   };
@@ -395,7 +395,7 @@ export default function MenuPage() {
 
                         {food.is_popular && (
                           <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                            Popular
+                            {t("seating.popular")}
                           </Badge>
                         )}
                         {food.discount > 0 && (

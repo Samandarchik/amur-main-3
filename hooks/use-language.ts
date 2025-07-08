@@ -202,7 +202,7 @@ const translations = {
     "contact.address": "Manzil",
     "contact.phone": "Telefon",
     "contact.email": "Email",
-    "contact.hours": "09:00 - 23:00", // Updated to reflect the working hours from the page
+    "contact.hours": "10:00 - 23:00", // Updated to reflect the working hours from the page
     "contact.name": "Ismingiz",
     "contact.subject": "Mavzu",
     "contact.message": "Xabaringiz",
@@ -524,7 +524,7 @@ const translations = {
     "contact.address": "Адрес",
     "contact.phone": "Телефон",
     "contact.email": "Email",
-    "contact.hours": "09:00 - 23:00", // Updated to reflect the working hours from the page
+    "contact.hours": "10:00 - 23:00", // Updated to reflect the working hours from the page
     "contact.name": "Ваше имя",
     "contact.subject": "Тема",
     "contact.message": "Ваше сообщение",
@@ -825,7 +825,7 @@ const translations = {
     "contact.address": "Address",
     "contact.phone": "Phone",
     "contact.email": "Email",
-    "contact.hours": "09:00 - 23:00", // Updated to reflect the working hours from the page
+    "contact.hours": "10:00 - 23:00", // Updated to reflect the working hours from the page
     "contact.name": "Your Name",
     "contact.subject": "Subject",
     "contact.message": "Your Message",

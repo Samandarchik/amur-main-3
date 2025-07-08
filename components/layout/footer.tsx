@@ -84,7 +84,7 @@ export function Footer() {
                 <Clock className="h-4 w-4 text-orange-400" />
                 <span className="text-gray-400">{t('footer.one')}</span>
               </li>
-              <li className="text-gray-400 ml-6">09:00 - 23:00</li>
+              <li className="text-gray-400 ml-6">10:00 - 23:00</li>
               <li className="text-orange-400 text-sm mt-2">{t('footer.day')}</li>
             </ul>
           </div>

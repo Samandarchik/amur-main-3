@@ -477,7 +477,7 @@ export default function CheckoutPage() {
                     className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded transition-colors duration-200"
                   >
                     {/* <img
-                      src={item.imageUrl ? `http://https://uzjoylar-yoqj.onrender.com/${item.imageUrl}` : "/placeholder.svg"}
+                      src={item.imageUrl ? `http://http://localhost:8080/${item.imageUrl}` : "/placeholder.svg"}
                       alt={item.name}
                       className="w-12 h-12 object-cover rounded-md"
 

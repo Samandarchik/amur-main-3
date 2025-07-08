@@ -44,10 +44,10 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
 
     if (imageUrl.includes("localhost") || imageUrl.startsWith("http")) {
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, "");
-      return `https://uzjoylar-yoqj.onrender.com${urlPath}`;
+      return `http://localhost:8080${urlPath}`;
     }
 
-    return `https://uzjoylar-yoqj.onrender.com${
+    return `http://localhost:8080${
       imageUrl.startsWith("/") ? imageUrl : "/" + imageUrl
     }`;
   };
@@ -143,7 +143,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
           <div className="absolute top-4 left-4 flex flex-col gap-2">
             {food.is_popular && (
               <Badge className="bg-red-500 text-white">
-                🔥 Popular
+                {t("seating.popular")}
               </Badge>
             )}
             {food.discount > 0 && (

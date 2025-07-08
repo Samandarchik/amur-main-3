@@ -47,11 +47,11 @@ export default function OrdersPage() {
     if (imageUrl.includes('localhost') || imageUrl.startsWith('http')) {
       // Replace localhost URL with demo.iqbo.uz and extract the path
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, '')
-      return `http://https://uzjoylar-yoqj.onrender.com${urlPath}`
+      return `http://http://localhost:8080${urlPath}`
     }
 
     // If it's just a path, prepend the base URL
-    return `http://https://uzjoylar-yoqj.onrender.com${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`
+    return `http://http://localhost:8080${imageUrl.startsWith('/') ? imageUrl : '/' + imageUrl}`
   }
 
   useEffect(() => {
@@ -171,11 +171,7 @@ export default function OrdersPage() {
                       <div className="space-y-2">
                         {order.foods?.slice(0, 3).map((item) => (
                           <div key={item.id} className="flex items-center space-x-3">
-                            <img
-                              src={getImageUrl(item.imageUrl)}
-                              alt={item.name}
-                              className="w-10 h-10 object-cover rounded-md"
-                            />
+
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium">{item.name}</p>
                               <p className="text-xs text-gray-500">

@@ -245,11 +245,7 @@ export default function OrderDetailsPage() {
                 <div className="space-y-4">
                   {orderData.foods.map((item) => (
                     <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
-                      <img
-                        src={item.imageUrl || "/placeholder.svg"}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover rounded-md"
-                      />
+
                       <div className="flex-1">
                         <h4 className="font-medium">{item.name}</h4>
                         <p className="text-sm text-gray-500 mb-1">{item.category}</p>

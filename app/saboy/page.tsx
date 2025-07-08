@@ -48,7 +48,7 @@ export default function SaboyPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-green-600" />
-                  <span>09:00 - 18:00</span>
+                  <span>10:00 - 18:00</span>
                 </div>
               </CardContent>
             </Card>
