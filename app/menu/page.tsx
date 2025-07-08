@@ -71,10 +71,10 @@ export default function MenuPage() {
 
     if (imageUrl.includes("localhost") || imageUrl.startsWith("http")) {
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, "");
-      return `http://localhost:8080${urlPath}`;
+      return `https://uzjoylar-yoqj.onrender.com${urlPath}`;
     }
 
-    return `http://localhost:8080${
+    return `https://uzjoylar-yoqj.onrender.com${
       imageUrl.startsWith("/") ? imageUrl : "/" + imageUrl
     }`;
   };
