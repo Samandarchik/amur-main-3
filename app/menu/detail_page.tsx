@@ -26,7 +26,6 @@ interface FoodDetailModalProps {
 }
 
 export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
   const { addItem, removeItem, items } = useCart();
   const { language, t } = useLanguage();
 
@@ -58,6 +57,13 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
 
   const handleAddItem = () => {
     if (!food) return;
+    
+    // Stock limitini tekshirish
+    const currentQuantity = getItemQuantity(food.id);
+    if (currentQuantity >= food.stock) {
+      return; // Stock limitiga yetganda qo'shmaslik
+    }
+    
     addItem({
       id: food.id,
       name: food.name,
@@ -83,14 +89,20 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
     }
   };
 
-  const handleShare = () => {
-    if (navigator.share && food) {
-      navigator.share({
-        title: food.name,
-        text: food.description,
-        url: window.location.href,
-      });
+
+
+  // Stock tugaganligi yoki yetarli emasligi haqida xabar
+  const getStockMessage = () => {
+    if (!food) return "";
+    
+    const remainingStock = food.stock - quantity;
+    if (remainingStock === 0 && quantity > 0) {
+      return t("food.allStockInCart") || "All available items are in your cart";
     }
+    if (remainingStock > 0 && remainingStock <= 3) {
+      return `${t("food.onlyLeft") || "Only"} ${remainingStock} ${t("food.itemsLeft") || "items left"}`;
+    }
+    return "";
   };
 
   // Handle escape key and backdrop click
@@ -111,6 +123,9 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
   }, [isOpen, onClose]);
 
   if (!isOpen || !food) return null;
+
+  const isMaxQuantityReached = quantity >= food.stock;
+  const stockMessage = getStockMessage();
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 backdrop-blur-sm">
@@ -159,24 +174,6 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
               size="icon"
               variant="secondary"
               className="rounded-full bg-white/90 backdrop-blur-sm"
-              onClick={() => setIsFavorite(!isFavorite)}
-            >
-              <Heart 
-                className={`h-5 w-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-              />
-            </Button>
-            <Button
-              size="icon"
-              variant="secondary"
-              className="rounded-full bg-white/90 backdrop-blur-sm"
-              onClick={handleShare}
-            >
-              <Share2 className="h-5 w-5 text-gray-600" />
-            </Button>
-            <Button
-              size="icon"
-              variant="secondary"
-              className="rounded-full bg-white/90 backdrop-blur-sm"
               onClick={onClose}
             >
               <X className="h-5 w-5 text-gray-600" />
@@ -203,9 +200,12 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
-                  <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold">{food.rating}</span>
-                  <span className="text-gray-500">({food.review_count} reviews)</span>
+                  <span className="font-semibold">{food.stock} {t("food.available")}</span>
+                  {quantity > 0 && (
+                    <span className="text-sm text-gray-500">
+                      ({food.stock - quantity} {t("food.remaining") || "remaining"})
+                    </span>
+                  )}
                 </div>
               </div>
               <Badge variant="outline" className="text-green-600 border-green-600">
@@ -213,6 +213,18 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
               </Badge>
             </div>
           </div>
+
+          {/* Stock Warning Message */}
+          {stockMessage && (
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-600" />
+                <span className="text-sm text-amber-700 font-medium">
+                  {stockMessage}
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Price */}
           <div className="flex items-center gap-3">
@@ -243,12 +255,6 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
               <Clock className="h-5 w-5 text-gray-500" />
               <span className="text-gray-700">
                 {food.preparation_time} min
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-gray-500" />
-              <span className="text-gray-700">
-                Serves 1-2
               </span>
             </div>
           </div>
@@ -304,11 +310,14 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
           <div className="flex items-center justify-between gap-4">
             {quantity === 0 ? (
               <Button
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold rounded-xl"
-                disabled={!food.isThere}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold rounded-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+                disabled={!food.isThere || food.stock === 0}
                 onClick={handleAddItem}
               >
-                {t("food.addToCart")} • {formatPrice(food.price)}
+                {food.stock === 0 ? 
+                  (t("food.outOfStock") || "Out of Stock") : 
+                  `${t("food.addToCart")} • ${formatPrice(food.price)}`
+                }
               </Button>
             ) : (
               <div className="flex items-center justify-between w-full">
@@ -328,7 +337,8 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
                     size="icon"
                     variant="ghost"
                     onClick={handleAddItem}
-                    className="h-10 w-10 text-white hover:bg-green-700 rounded-lg"
+                    disabled={isMaxQuantityReached}
+                    className="h-10 w-10 text-white hover:bg-green-700 rounded-lg disabled:bg-green-800 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Plus className="h-5 w-5" />
                   </Button>
@@ -340,6 +350,11 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
                   <div className="text-sm text-gray-500">
                     Total for {quantity} items
                   </div>
+                  {isMaxQuantityReached && (
+                    <div className="text-xs text-amber-600 font-medium">
+                      {t("food.maxQuantityReached") || "Maximum quantity reached"}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

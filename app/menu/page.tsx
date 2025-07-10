@@ -438,9 +438,8 @@ export default function MenuPage() {
 
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                             <span className="text-sm text-gray-600">
-                              {food.rating} ({food.review_count})
+                              {food.stock} {t("food.available")}
                             </span>
                           </div>
 
@@ -466,14 +465,20 @@ export default function MenuPage() {
                               <span className="font-semibold text-white min-w-[2rem] text-center">
                                 {quantity}
                               </span>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => handleAddItem(food)}
-                                className="h-8 w-8 p-0 text-white hover:bg-green-700"
-                              >
-                                <Plus className="h-3 w-3" />
-                              </Button>
+                             <Button
+  size="sm"
+  variant="ghost"
+  onClick={() => {
+    if (quantity < food.stock) {
+      handleAddItem(food);
+    }
+  }}
+  disabled={quantity >= food.stock}
+  className="h-8 w-8 p-0 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  <Plus className="h-3 w-3" />
+</Button>
+
                             </div>
                           )}
                         </div>

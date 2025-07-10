@@ -1,5 +1,5 @@
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://uzjoylar-yoqj.onrender.com/api"
+// https://uzjoylar-yoqj.onrender.co
 // https://uzjoylar-yoqj.onrender.com
 
 // Get current language from localStorage (for non-hook contexts)

@@ -66,6 +66,7 @@ const translations = {
 
     // Food
     "food.addToCart": "Savatga qo'shish",
+    "food.viewDetails": "Batafsil ko'rish",
     "food.price": "Narx",
     "food.available": "Mavjud",
     "food.unavailable": "Mavjud emas",
@@ -389,6 +390,7 @@ const translations = {
     // Food
     "food.addToCart": "В корзину",
     "food.price": "Цена",
+    "food.viewDetails": "Подробнее",
     "food.available": "Доступно",
     "food.unavailable": "Недоступно",
     "food.lowStock": "Мало осталось",
@@ -691,6 +693,7 @@ const translations = {
     // Food
     "food.addToCart": "Add to Cart",
     "food.price": "Price",
+    "food.viewDetails": "View Details",
     "food.available": "Available",
     "food.unavailable": "Unavailable",
     "food.lowStock": "Low Stock",

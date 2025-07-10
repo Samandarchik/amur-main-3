@@ -24,7 +24,7 @@ import {
 import { useSearchParams } from "next/navigation";
 import { api, type Food, type Category } from "@/lib/api";
 import { useLanguage } from "@/hooks/use-language";
-import { FoodDetailModal } from "../menu/detail_page";
+import { FoodDetailModal } from "../bookmenu/detail_page";
 
 export default function BookMenu() {
   const [foods, setFoods] = useState<Food[]>([]);
