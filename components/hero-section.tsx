@@ -117,7 +117,7 @@ export function HeroSection() {
                 </div>
                 <div>
                   <div className="text-sm text-slate-400">{t("hero.map")}</div>
-                  <div className="font-semibold text-white">Samarqand</div>
+                  <div className="font-semibold text-white">{t("delivery.address_location")}</div>
                 </div>
               </div>
 

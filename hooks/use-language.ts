@@ -13,6 +13,8 @@ interface LanguageStore {
 
 const translations = {
   uz: {
+    "location_verification_description":"Пожалуйста, подтвердите ваше местоположение, чтобы мы могли доставить ваш заказ.",
+
     // Navigation
     "nav.home": "Bosh sahifa",
     "nav.menu": "Menyu",
@@ -337,6 +339,14 @@ const translations = {
     sum: "so'm", // Currency key for formatPrice
   },
   ru: {
+    "location_verification_description":"Пожалуйста, подтвердите ваше местоположение, чтобы мы могли доставить ваш заказ.",
+            "location_verification_title": "Подтверждение местоположения",
+    "location_verification_required_title": "Требуется подтверждение местоположения",
+    "verify_location_button": "Подтвердить местоположение",
+    "location_too_far_title": "Местоположение слишком далеко",
+    "location_too_far_detailed_description": "Ваше местоположение слишком далеко от ресторана Amur.",
+    "distance_away": "Расстояние: {{distance}} км",
+    "need_to_be_closer": "Вам нужно быть ближе к ресторану Amur.",
     // Navigation
     "nav.home": "Главная",
     "nav.menu": "Меню",
@@ -561,7 +571,7 @@ const translations = {
     "footer.one": "Понедельник - Воскресенье",
     "footer.two": "Быстрые ссылки",
     "footer.logo": "Ресторан Амур",
-    "footer.day": "Работайте каждый день",
+    "footer.day": "Работаем каждый день",
 
     // Seating Areas
     "seating.title": "Места в ресторане",
@@ -658,6 +668,13 @@ const translations = {
     sum: "сум",
   },
   en: {
+          "location_verification_title": "Location Verification",
+    "location_verification_required_title": "Your location is required",
+    "verify_location_button": "Verify Location",
+    "location_too_far_title": "Your location is too far",
+    "location_too_far_detailed_description": "Your location is too far from Amur Restaurant.",
+    "distance_away": "Distance: {{distance}} km",
+    "need_to_be_closer":"You need to be closer to Amur Restaurant.",
     // Navigation
     "nav.home": "Home",
     "nav.menu": "Menu",

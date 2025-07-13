@@ -1,6 +1,6 @@
+import { useLanguage } from "@/hooks/use-language";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://uzjoylar-yoqj.onrender.com/api"
-// https://uzjoylar-yoqj.onrender.co
-// https://uzjoylar-yoqj.onrender.com
 
 // Get current language from localStorage (for non-hook contexts)
 const getCurrentLanguage = () => {
@@ -15,6 +15,52 @@ const getCurrentLanguage = () => {
     // fallback if parsing fails
   }
   return 'ru'
+}
+
+// Translation helper function for static contexts
+const getTranslation = (key: string, lang?: string) => {
+  const currentLang = lang || getCurrentLanguage()
+  
+  const translations: Record<string, Record<string, string>> = {
+    'Stol-1': { uz: 'Stol-1', ru: 'Стол-1', en: 'Table-1' },
+    'Stol-2': { uz: 'Stol-2', ru: 'Стол-2', en: 'Table-2' },
+    'Stol-3': { uz: 'Stol-3', ru: 'Стол-3', en: 'Table-3' },
+    'Stol-4': { uz: 'Stol-4', ru: 'Стол-4', en: 'Table-4' },
+    'Stol-5': { uz: 'Stol-5', ru: 'Стол-5', en: 'Table-5' },
+    'Stol-6': { uz: 'Stol-6', ru: 'Стол-6', en: 'Table-6' },
+    'Stol-7': { uz: 'Stol-7', ru: 'Стол-7', en: 'Table-7' },
+    'Stol-8': { uz: 'Stol-8', ru: 'Стол-8', en: 'Table-8' },
+    'Stol-9': { uz: 'Stol-9', ru: 'Стол-9', en: 'Table-9' },
+    'Stol-10': { uz: 'Stol-10', ru: 'Стол-10', en: 'Table-10' },
+    'Stol-11': { uz: 'Stol-11', ru: 'Стол-11', en: 'Table-11' },
+    'Stol-12': { uz: 'Stol-12', ru: 'Стол-12', en: 'Table-12' },
+    'Stol-13': { uz: 'Stol-13', ru: 'Стол-13', en: 'Table-13' },
+    'Stol-14': { uz: 'Stol-14', ru: 'Стол-14', en: 'Table-14' },
+    'Stol-15': { uz: 'Stol-15', ru: 'Стол-15', en: 'Table-15' },
+    'Stol-16': { uz: 'Stol-16', ru: 'Стол-16', en: 'Table-16' },
+    'Stol-17': { uz: 'Stol-17', ru: 'Стол-17', en: 'Table-17' },
+    'Zal-1': { uz: 'Zal-1', ru: 'Зал-1', en: 'Hall-1' },
+    'Zal-2': { uz: 'Zal-2', ru: 'Зал-2', en: 'Hall-2' },
+    'Terassa-1': { uz: 'Terassa-1', ru: 'Терраса-1', en: 'Terrace-1' },
+    'Terassa-2': { uz: 'Terassa-2', ru: 'Терраса-2', en: 'Terrace-2' },
+    'Terassa-3': { uz: 'Terassa-3', ru: 'Терраса-3', en: 'Terrace-3' },
+    'Terassa-4': { uz: 'Terassa-4', ru: 'Терраса-4', en: 'Terrace-4' },
+    'Terassa-5': { uz: 'Terassa-5', ru: 'Терраса-5', en: 'Terrace-5' },
+    'Terassa-6': { uz: 'Terassa-6', ru: 'Терраса-6', en: 'Terrace-6' },
+    'Terassa-7': { uz: 'Terassa-7', ru: 'Терраса-7', en: 'Terrace-7' },
+    'Terassa-8': { uz: 'Terassa-8', ru: 'Терраса-8', en: 'Terrace-8' },
+    'Terassa-9': { uz: 'Terassa-9', ru: 'Терраса-9', en: 'Terrace-9' },
+    'Terassa-10': { uz: 'Terassa-10', ru: 'Терраса-10', en: 'Terrace-10' },
+    'Terassa-11': { uz: 'Terassa-11', ru: 'Терраса-11', en: 'Terrace-11' },
+    'Terassa-12': { uz: 'Terassa-12', ru: 'Терраса-12', en: 'Terrace-12' },
+    'Terassa-13': { uz: 'Terassa-13', ru: 'Терраса-13', en: 'Terrace-13' },
+    'Terassa-14': { uz: 'Terassa-14', ru: 'Терраса-14', en: 'Terrace-14' },
+    'Terassa-15': { uz: 'Terassa-15', ru: 'Терраса-15', en: 'Terrace-15' },
+    'Terassa-16': { uz: 'Terassa-16', ru: 'Терраса-16', en: 'Terrace-16' },
+    'terrace': { uz: 'Terassa', ru: 'Терраса', en: 'Terrace' }
+  }
+  
+  return translations[key]?.[currentLang] || key
 }
 
 // API response types
@@ -43,7 +89,7 @@ export interface Food {
     ru: string
     en: string
   }
-  addToCart:string
+  addToCart: string
   name: string
   descriptions: {
     uz: string
@@ -167,62 +213,62 @@ export interface RestaurantTable {
   is_available: boolean
 }
 
-// Complete table list
-const ALL_TABLES: RestaurantTable[] = [
+// Static tables - will be dynamically translated when needed
+const createTables = () => [
   // Zal-1
-  { id: "93e05d01c3304b3b9dc963db187dbb51", name: "Stol-1", zone: "Zal-1", is_available: true },
-  { id: "73d6827a734a43b6ad779b5979bb9c6a", name: "Stol-2", zone: "Zal-1", is_available: true },
-  { id: "dc6e76e87f9e42a08a4e1198fc5f89a0", name: "Stol-3", zone: "Zal-1", is_available: true },
-  { id: "70a53b0ac3264fce88d9a4b7d3a7fa5e", name: "Stol-4", zone: "Zal-1", is_available: true },
-  { id: "3b8bfb57a10b4e4cb3b7a6d1434dd1bc", name: "Stol-5", zone: "Zal-1", is_available: true },
-  { id: "4f0e0220e40b43b5a28747984474d6f7", name: "Stol-6", zone: "Zal-1", is_available: true },
-  { id: "15fc7ed2ff3041aeaa52c5087e51f6b2", name: "Stol-7", zone: "Zal-1", is_available: true },
-  { id: "41d0d60382b246469b7e01d70031c648", name: "Stol-8", zone: "Zal-1", is_available: true },
-  { id: "539f421ed1974f55b86d09cfdace9ae3", name: "Stol-9", zone: "Zal-1", is_available: true },
-  { id: "1ad401f487024d1ab78e1db90eb3ac18", name: "Stol-10", zone: "Zal-1", is_available: true },
-  { id: "367f6587c09d4c1ebfe2b3e31c45b0ec", name: "Stol-11", zone: "Zal-1", is_available: true },
-  { id: "da2a9f108bff460aa1b3149b8fa9ed2a", name: "Stol-12", zone: "Zal-1", is_available: true },
-  { id: "91e91fa5a9e849aab850152b55613f98", name: "Stol-13", zone: "Zal-1", is_available: true },
-  { id: "d6d2ee01a57f4f4e93e6788eb1ccf4b2", name: "Stol-14", zone: "Zal-1", is_available: true },
-  { id: "b0f79bb99fef4492a26573f279845b9c", name: "Stol-15", zone: "Zal-1", is_available: true },
-  { id: "c2b7aeef8e814a9c8dfc4935cf8392f6", name: "Stol-16", zone: "Zal-1", is_available: true },
-  { id: "f4389cde50ac4c2ab4487a4a106d6d48", name: "Stol-17", zone: "Zal-1", is_available: true },
+  { id: "93e05d01c3304b3b9dc963db187dbb51", name: getTranslation("Stol-1"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "73d6827a734a43b6ad779b5979bb9c6a", name: getTranslation("Stol-2"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "dc6e76e87f9e42a08a4e1198fc5f89a0", name: getTranslation("Stol-3"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "70a53b0ac3264fce88d9a4b7d3a7fa5e", name: getTranslation("Stol-4"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "3b8bfb57a10b4e4cb3b7a6d1434dd1bc", name: getTranslation("Stol-5"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "4f0e0220e40b43b5a28747984474d6f7", name: getTranslation("Stol-6"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "15fc7ed2ff3041aeaa52c5087e51f6b2", name: getTranslation("Stol-7"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "41d0d60382b246469b7e01d70031c648", name: getTranslation("Stol-8"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "539f421ed1974f55b86d09cfdace9ae3", name: getTranslation("Stol-9"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "1ad401f487024d1ab78e1db90eb3ac18", name: getTranslation("Stol-10"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "367f6587c09d4c1ebfe2b3e31c45b0ec", name: getTranslation("Stol-11"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "da2a9f108bff460aa1b3149b8fa9ed2a", name: getTranslation("Stol-12"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "91e91fa5a9e849aab850152b55613f98", name: getTranslation("Stol-13"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "d6d2ee01a57f4f4e93e6788eb1ccf4b2", name: getTranslation("Stol-14"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "b0f79bb99fef4492a26573f279845b9c", name: getTranslation("Stol-15"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "c2b7aeef8e814a9c8dfc4935cf8392f6", name: getTranslation("Stol-16"), zone: getTranslation("Zal-1"), is_available: true },
+  { id: "f4389cde50ac4c2ab4487a4a106d6d48", name: getTranslation("Stol-17"), zone: getTranslation("Zal-1"), is_available: true },
 
   // Zal-2
-  { id: "c366a08ac9aa48d4a29f31de3561f69a", name: "Stol-1", zone: "Zal-2", is_available: true },
-  { id: "d10a58dcb3cc4e3eb67a84f785a1a62d", name: "Stol-2", zone: "Zal-2", is_available: true },
-  { id: "ecfc541124a54051b78e72930e1eac54", name: "Stol-3", zone: "Zal-2", is_available: true },
-  { id: "e5baf1c7ed4d4a449fca1c7df1bb7006", name: "Stol-4", zone: "Zal-2", is_available: true },
-  { id: "22bc7dbd17e145c6be40b1d01b29b16d", name: "Stol-5", zone: "Zal-2", is_available: true },
-  { id: "ff6c4b82207f42a89b676ec5d0f1f7cc", name: "Stol-6", zone: "Zal-2", is_available: true },
-  { id: "f00db03ddfa24d8b9f603a59cfb6f6cf", name: "Stol-7", zone: "Zal-2", is_available: true },
-  { id: "f5c5bfa4a9974643b7a3aeb6d1114c7b", name: "Stol-8", zone: "Zal-2", is_available: true },
-  { id: "62eb05a6882c401c953933132d43b7ff", name: "Stol-9", zone: "Zal-2", is_available: true },
-  { id: "bb842ff325a8498a99414958c400bc62", name: "Stol-10", zone: "Zal-2", is_available: true },
-  { id: "5ab7550a5ecf49b2b28faec156acbd44", name: "Stol-11", zone: "Zal-2", is_available: true },
-  { id: "9d640accb3d94fcbad09c191f03a7f8e", name: "Stol-12", zone: "Zal-2", is_available: true },
-  { id: "7a4044a32e2b4a35a9c91be98c3975a2", name: "Stol-13", zone: "Zal-2", is_available: true },
-  { id: "9c45db6ccda54e989f8b0ebf12c0a34b", name: "Stol-14", zone: "Zal-2", is_available: true },
-  { id: "f3fbbf2f179b4ec89745bfc3fdd10667", name: "Stol-15", zone: "Zal-2", is_available: true },
-  { id: "42134cd30da04d5b9e37fc68f7913fc7", name: "Stol-16", zone: "Zal-2", is_available: true },
+  { id: "c366a08ac9aa48d4a29f31de3561f69a", name: getTranslation("Stol-1"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "d10a58dcb3cc4e3eb67a84f785a1a62d", name: getTranslation("Stol-2"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "ecfc541124a54051b78e72930e1eac54", name: getTranslation("Stol-3"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "e5baf1c7ed4d4a449fca1c7df1bb7006", name: getTranslation("Stol-4"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "22bc7dbd17e145c6be40b1d01b29b16d", name: getTranslation("Stol-5"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "ff6c4b82207f42a89b676ec5d0f1f7cc", name: getTranslation("Stol-6"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "f00db03ddfa24d8b9f603a59cfb6f6cf", name: getTranslation("Stol-7"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "f5c5bfa4a9974643b7a3aeb6d1114c7b", name: getTranslation("Stol-8"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "62eb05a6882c401c953933132d43b7ff", name: getTranslation("Stol-9"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "bb842ff325a8498a99414958c400bc62", name: getTranslation("Stol-10"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "5ab7550a5ecf49b2b28faec156acbd44", name: getTranslation("Stol-11"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "9d640accb3d94fcbad09c191f03a7f8e", name: getTranslation("Stol-12"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "7a4044a32e2b4a35a9c91be98c3975a2", name: getTranslation("Stol-13"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "9c45db6ccda54e989f8b0ebf12c0a34b", name: getTranslation("Stol-14"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "f3fbbf2f179b4ec89745bfc3fdd10667", name: getTranslation("Stol-15"), zone: getTranslation("Zal-2"), is_available: true },
+  { id: "42134cd30da04d5b9e37fc68f7913fc7", name: getTranslation("Stol-16"), zone: getTranslation("Zal-2"), is_available: true },
 
   // Terassa
-  { id: "3066c1f1c2e640e5a7272e28b4d08f8e", name: "Terassa-1", zone: "Terassa", is_available: true },
-  { id: "5932a6769b154a94b7dbbf646e3725a3", name: "Terassa-2", zone: "Terassa", is_available: true },
-  { id: "bc1dce5a12d049a489f5aa6f7aa64b3c", name: "Terassa-3", zone: "Terassa", is_available: true },
-  { id: "a30c8e82ab6843d898c487ae9a6f31f2", name: "Terassa-4", zone: "Terassa", is_available: true },
-  { id: "fa8e703e17924a99b4496c96459ae1e7", name: "Terassa-5", zone: "Terassa", is_available: true },
-  { id: "32575a40ab784b878888b1de5421c24f", name: "Terassa-6", zone: "Terassa", is_available: true },
-  { id: "f4530dcf98854f92a49d64b71b7d1372", name: "Terassa-7", zone: "Terassa", is_available: true },
-  { id: "93c931e153694f69a9fd404be85727de", name: "Terassa-8", zone: "Terassa", is_available: true },
-  { id: "4be17f7c57964e689d536cc946925e02", name: "Terassa-9", zone: "Terassa", is_available: true },
-  { id: "1ad9d8bbcc4e4b58b90ffed835f42e6b", name: "Terassa-10", zone: "Terassa", is_available: true },
-  { id: "49045b8e013d4722a72a41e3a5b8a761", name: "Terassa-11", zone: "Terassa", is_available: true },
-  { id: "f9a753a6bfc5483f9be02b36b3a021ae", name: "Terassa-12", zone: "Terassa", is_available: true },
-  { id: "c4a91adbf5c545f0b5c2cd0732e429ef", name: "Terassa-13", zone: "Terassa", is_available: true },
-  { id: "be6e16140c744418b47e021134a31b3f", name: "Terassa-14", zone: "Terassa", is_available: true },
-  { id: "c3c2317de56f4f8da8fa4c758dfb0427", name: "Terassa-15", zone: "Terassa", is_available: true },
-  { id: "76a5f6e3c08d4761b859ea0bb496fc63", name: "Terassa-16", zone: "Terassa", is_available: true },
+  { id: "3066c1f1c2e640e5a7272e28b4d08f8e", name: getTranslation("Terassa-1"), zone: getTranslation("terrace"), is_available: true },
+  { id: "5932a6769b154a94b7dbbf646e3725a3", name: getTranslation("Terassa-2"), zone: getTranslation("terrace"), is_available: true },
+  { id: "bc1dce5a12d049a489f5aa6f7aa64b3c", name: getTranslation("Terassa-3"), zone: getTranslation("terrace"), is_available: true },
+  { id: "a30c8e82ab6843d898c487ae9a6f31f2", name: getTranslation("Terassa-4"), zone: getTranslation("terrace"), is_available: true },
+  { id: "fa8e703e17924a99b4496c96459ae1e7", name: getTranslation("Terassa-5"), zone: getTranslation("terrace"), is_available: true },
+  { id: "32575a40ab784b878888b1de5421c24f", name: getTranslation("Terassa-6"), zone: getTranslation("terrace"), is_available: true },
+  { id: "f4530dcf98854f92a49d64b71b7d1372", name: getTranslation("Terassa-7"), zone: getTranslation("terrace"), is_available: true },
+  { id: "93c931e153694f69a9fd404be85727de", name: getTranslation("Terassa-8"), zone: getTranslation("terrace"), is_available: true },
+  { id: "4be17f7c57964e689d536cc946925e02", name: getTranslation("Terassa-9"), zone: getTranslation("terrace"), is_available: true },
+  { id: "1ad9d8bbcc4e4b58b90ffed835f42e6b", name: getTranslation("Terassa-10"), zone: getTranslation("terrace"), is_available: true },
+  { id: "49045b8e013d4722a72a41e3a5b8a761", name: getTranslation("Terassa-11"), zone: getTranslation("terrace"), is_available: true },
+  { id: "f9a753a6bfc5483f9be02b36b3a021ae", name: getTranslation("Terassa-12"), zone: getTranslation("terrace"), is_available: true },
+  { id: "c4a91adbf5c545f0b5c2cd0732e429ef", name: getTranslation("Terassa-13"), zone: getTranslation("terrace"), is_available: true },
+  { id: "be6e16140c744418b47e021134a31b3f", name: getTranslation("Terassa-14"), zone: getTranslation("terrace"), is_available: true },
+  { id: "c3c2317de56f4f8da8fa4c758dfb0427", name: getTranslation("Terassa-15"), zone: getTranslation("terrace"), is_available: true },
+  { id: "76a5f6e3c08d4761b859ea0bb496fc63", name: getTranslation("Terassa-16"), zone: getTranslation("terrace"), is_available: true },
 ]
 
 // API functions
@@ -386,32 +432,33 @@ export const api = {
 
     return response.json()
   },
-// Create order
-async createOrder(orderData: CreateOrderRequest, token?: string): Promise<CreateOrderResponse> {
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-  }
 
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`
-  }
+  // Create order
+  async createOrder(orderData: CreateOrderRequest, token?: string): Promise<CreateOrderResponse> {
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+    }
 
-  const response = await fetch(`${API_BASE_URL}/orders`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(orderData),
-  })
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`
+    }
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}))
-    const errorMessage = errorData.message || "Failed to create order"
-    throw new Error(
-      `${errorMessage}. Sent data: ${JSON.stringify(orderData, null, 2)}`
-    )
-  }
+    const response = await fetch(`${API_BASE_URL}/orders`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(orderData),
+    })
 
-  return response.json()
-},
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      const errorMessage = errorData.message || "Failed to create order"
+      throw new Error(
+        `${errorMessage}. Sent data: ${JSON.stringify(orderData, null, 2)}`
+      )
+    }
+
+    return response.json()
+  },
 
   // Get user orders
   async getUserOrders(
@@ -490,13 +537,14 @@ async createOrder(orderData: CreateOrderRequest, token?: string): Promise<Create
 
   // Get restaurant tables
   async getRestaurantTables(): Promise<RestaurantTable[]> {
-    // Return the complete table list
-    return ALL_TABLES
+    // Return dynamically created tables with current language
+    return createTables()
   },
 
   // Get single table by ID
   async getTableById(tableId: string): Promise<RestaurantTable | null> {
-    const table = ALL_TABLES.find((t) => t.id === tableId)
+    const tables = createTables()
+    const table = tables.find((t) => t.id === tableId)
     return table || null
   },
 }

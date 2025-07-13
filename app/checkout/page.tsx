@@ -10,14 +10,34 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
-import { MapPin, CreditCard, Banknote, Smartphone, Store, Utensils, Navigation, CheckCircle } from "lucide-react"
+import { MapPin, CreditCard, Banknote, Smartphone, Store, Utensils, Navigation, CheckCircle, AlertTriangle } from "lucide-react"
 import { useCart } from "@/hooks/use-cart"
 import { useAuth } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 import { api, type CreateOrderRequest, type RestaurantTable } from "@/lib/api"
 import { AuthModal } from "@/components/auth/auth-modal"
-import { useLanguage } from "@/hooks/use-language"
+import { useLanguage } from "@/hooks/use-language";
+
+
+// Restaurant coordinates
+const RESTAURANT_LAT = 39.7013044
+const RESTAURANT_LNG = 67.0143978
+const MAX_DISTANCE = 100 // meters
+
+// Function to calculate distance between two coordinates using Haversine formula
+function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371e3 // Earth's radius in meters
+  const φ1 = (lat1 * Math.PI) / 180
+  const φ2 = (lat2 * Math.PI) / 180
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180
+  const Δλ = ((lng2 - lng1) * Math.PI) / 180
+
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+  return R * c // Distance in meters
+}
 
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart()
@@ -45,6 +65,9 @@ export default function CheckoutPage() {
   const [specialInstructions, setSpecialInstructions] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGettingLocation, setIsGettingLocation] = useState(false)
+  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [isLocationVerified, setIsLocationVerified] = useState(false)
+  const [locationDistance, setLocationDistance] = useState<number | null>(null)
 
   // Check for pre-selected table from localStorage
   useEffect(() => {
@@ -92,6 +115,23 @@ export default function CheckoutPage() {
     }
   }, [isAuthenticated, user])
 
+  // Verify location when delivery type changes to atTheRestaurant
+  useEffect(() => {
+    if (deliveryType === "atTheRestaurant" && currentLocation) {
+      const distance = calculateDistance(
+        currentLocation.lat,
+        currentLocation.lng,
+        RESTAURANT_LAT,
+        RESTAURANT_LNG
+      )
+      setLocationDistance(distance)
+      setIsLocationVerified(distance <= MAX_DISTANCE)
+    } else {
+      setIsLocationVerified(false)
+      setLocationDistance(null)
+    }
+  }, [deliveryType, currentLocation])
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("uz-UZ").format(price) + ` ${t("sum")}` // "so'm"
   }
@@ -115,11 +155,19 @@ export default function CheckoutPage() {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setDeliveryInfo((prev) => ({
-          ...prev,
-          latitude: position.coords.latitude.toString(),
-          longitude: position.coords.longitude.toString(),
-        }))
+        const lat = position.coords.latitude
+        const lng = position.coords.longitude
+        
+        setCurrentLocation({ lat, lng })
+        
+        if (deliveryType === "delivery") {
+          setDeliveryInfo((prev) => ({
+            ...prev,
+            latitude: lat.toString(),
+            longitude: lng.toString(),
+          }))
+        }
+        
         toast({
           title: t("location_detected_title"), // "Joylashuv aniqlandi"
           description: t("location_detected_description"), // "Sizning joylashuvingiz muvaffaqiyatli aniqlandi"
@@ -143,11 +191,76 @@ export default function CheckoutPage() {
     )
   }
 
+  const verifyLocationForRestaurant = () => {
+    setIsGettingLocation(true)
+
+    if (!navigator.geolocation) {
+      toast({
+        title: t("geolocation_not_supported_title"),
+        description: t("geolocation_not_supported_description"),
+        variant: "destructive",
+      })
+      setIsGettingLocation(false)
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude
+        const lng = position.coords.longitude
+        const distance = calculateDistance(lat, lng, RESTAURANT_LAT, RESTAURANT_LNG)
+        
+        setCurrentLocation({ lat, lng })
+        setLocationDistance(distance)
+        setIsLocationVerified(distance <= MAX_DISTANCE)
+        
+        if (distance <= MAX_DISTANCE) {
+          toast({
+            title: t("location_verified_title"), // "Joylashuv tasdiqlandi"
+            description: t("location_verified_description"), // "Siz restoran yaqinida ekanligingiz tasdiqlandi"
+          })
+        } else {
+          toast({
+            title: t("location_too_far_title"), // "Juda uzoqdasiz"
+            description: t("location_too_far_description"), // "Restoranda ovqatlanish uchun restoran yaqinida bo'lishingiz kerak"
+            variant: "destructive",
+          })
+        }
+        
+        setIsGettingLocation(false)
+      },
+      (error) => {
+        console.error("Geolocation error:", error)
+        toast({
+          title: t("location_detection_failed_title"),
+          description: t("location_detection_failed_description"),
+          variant: "destructive",
+        })
+        setIsGettingLocation(false)
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000,
+      },
+    )
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!isAuthenticated) {
       setShowAuthModal(true)
+      return
+    }
+
+    // Check location verification for restaurant orders
+    if (deliveryType === "atTheRestaurant" && !isLocationVerified) {
+      toast({
+        title: t("location_verification_required_title"), // "Joylashuv tasdiqlanishi kerak"
+        description: t("location_verification_required_description"), // "Restoranda ovqatlanish uchun avval joylashuvingizni tasdiqlang"
+        variant: "destructive",
+      })
       return
     }
 
@@ -257,16 +370,6 @@ export default function CheckoutPage() {
                     title={t("phone_number_readonly_tooltip")} // "Telefon raqamni o'zgartirib bo'lmaydi"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="email">{t("email_label")}</Label> {/* "Email (ixtiyoriy)" */}
-                  <Input
-                    id="email"
-                    type="email"
-                    value={customerInfo.email}
-                    onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                    className="transition-all duration-200 focus:scale-105"
-                  />
-                </div>
               </CardContent>
             </Card>
 
@@ -315,6 +418,79 @@ export default function CheckoutPage() {
                 </RadioGroup>
               </CardContent>
             </Card>
+
+            {/* Location Verification for Restaurant Orders */}
+            {deliveryType === "atTheRestaurant" && preSelectedTable && (
+              <Card className="animate-fade-in-up animation-delay-500">
+                <CardHeader>
+                  <CardTitle>{t("location_verification_title")}</CardTitle> {/* "Joylashuv tasdiqlash" */}
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {!isLocationVerified ? (
+                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="h-6 w-6 text-orange-600 mt-0.5" />
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-orange-800 mb-2">
+                            {t("location_verification_required_title")} {/* "Joylashuv tasdiqlanishi kerak" */}
+                          </h4>
+                          <p className="text-orange-700 text-sm mb-3">
+                            {t("location_verification_description")} {/* "Restoranda ovqatlanish uchun siz restoran yaqinida (100m ichida) bo'lishingiz kerak. Joylashuvingizni tasdiqlash uchun tugmani bosing." */}
+                          </p>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={verifyLocationForRestaurant}
+                            disabled={isGettingLocation}
+                            className="w-full"
+                          >
+                            <Navigation className="h-4 w-4 mr-2" />
+                            {isGettingLocation ? t("verifying_location_button") : t("verify_location_button")} {/* "Joylashuv tekshirilmoqda..." : "Joylashuvni tasdiqlash" */}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <div className="flex items-center gap-3">
+                        <CheckCircle className="h-6 w-6 text-green-600" />
+                        <div>
+                          <h4 className="font-semibold text-green-800">
+                            {t("location_verified_title")} {/* "Joylashuv tasdiqlandi" */}
+                          </h4>
+                          <p className="text-green-700 text-sm">
+                            {t("location_verified_description")} {/* "Siz restoran yaqinida ekanligingiz tasdiqlandi" */}
+                            {locationDistance && (
+                              <span className="font-medium ml-1">
+                                ({Math.round(locationDistance)}m {t("distance_away")}) {/* "uzoqlikda" */}
+                              </span>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {locationDistance !== null && !isLocationVerified && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <div className="flex items-center gap-3">
+                        <AlertTriangle className="h-6 w-6 text-red-600" />
+                        <div>
+                          <h4 className="font-semibold text-red-800">
+                            {t("location_too_far_title")} {/* "Juda uzoqdasiz" */}
+                          </h4>
+                          <p className="text-red-700 text-sm">
+                            {t("location_too_far_detailed_description")} {/* "Siz restoranidan {distance}m uzoqdasiz. Restoranda ovqatlanish uchun 100m ichida bo'lishingiz kerak." */}
+                         {t("distance_away", { distance: Math.round(locationDistance ) })}
+
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
             {/* Delivery Address */}
             {deliveryType === "delivery" && (
@@ -531,13 +707,19 @@ export default function CheckoutPage() {
                   type="submit"
                   className="w-full transform hover:scale-105 transition-all duration-200"
                   size="lg"
-                  disabled={isSubmitting || !isAuthenticated}
+                  disabled={
+                    isSubmitting || 
+                    !isAuthenticated || 
+                    (deliveryType === "atTheRestaurant" && !isLocationVerified)
+                  }
                 >
                   {isSubmitting
                     ? t("submitting_order_button") // "Buyurtma berilmoqda..."
                     : !isAuthenticated
                       ? t("login_to_order_button") // "Avval tizimga kiring"
-                      : t("place_order_button")} {/* "Buyurtma berish" */}
+                      : deliveryType === "atTheRestaurant" && !isLocationVerified
+                        ? t("verify_location_first_button") // "Avval joylashuvni tasdiqlang"
+                        : t("place_order_button")} {/* "Buyurtma berish" */}
                 </Button>
 
                 <p className="text-xs text-gray-500 text-center">{t("order_confirmation_note")}</p> {/* "Buyurtma bergandan so'ng, siz bilan bog'lanamiz" */}
