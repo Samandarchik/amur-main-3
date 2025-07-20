@@ -44,8 +44,6 @@ export default function BookMenu() {
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const categoryNavRef = useRef<HTMLDivElement>(null);
 
-  const searchParams = useSearchParams();
-
   // Helper function to get category name by key
   const getCategoryNameByKey = (key: string) => {
     if (key === "all") return null;
@@ -55,7 +53,7 @@ export default function BookMenu() {
 
   // Helper function to fix image URL
   const getImageUrl = (imageUrl: string) => {
-    if (!imageUrl) return "/placeholder.svg?height=200&width=300";
+    if (!imageUrl) return "";
 
     if (imageUrl.includes("localhost") || imageUrl.startsWith("http")) {
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, "");
@@ -88,7 +86,7 @@ export default function BookMenu() {
         // Load categories
         const categoriesData = await api.getCategories();
         setCategories([
-          { key: "all", name: t("categories.all") },
+           
           ...categoriesData,
         ]);
 
@@ -109,73 +107,7 @@ export default function BookMenu() {
     loadData();
   }, [language, t]);
 
-  // Handle URL category parameter
-  useEffect(() => {
-    const category = searchParams.get("category");
-    if (category && categories.some((cat) => cat.key === category)) {
-      setSelectedCategory(category);
-    }
-  }, [searchParams, categories]);
 
-  // Filter foods based on search and sort
-  useEffect(() => {
-    const filterAndSort = async () => {
-      try {
-        const params: any = {
-          page: 1,
-          limit: 100,
-        };
-
-        if (searchQuery) {
-          params.search = searchQuery;
-        }
-        if (sortBy !== "id") {
-          params.sort = sortBy;
-        }
-
-        // Don't filter by category in API call - we'll handle it locally for sections
-        const foodsData = await api.getFoods(params);
-        setFilteredFoods(foodsData.foods);
-      } catch (error) {
-        console.error("Failed to filter foods:", error);
-        let filtered = foods;
-
-        if (searchQuery) {
-          filtered = filtered.filter(
-            (food) =>
-              food.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              food.description.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-
-        // Sort
-        switch (sortBy) {
-          case "price_asc":
-            filtered.sort((a, b) => a.price - b.price);
-            break;
-          case "price_desc":
-            filtered.sort((a, b) => b.price - a.price);
-            break;
-          case "rating":
-            filtered.sort((a, b) => b.rating - a.rating);
-            break;
-          case "name":
-            filtered.sort((a, b) => a.name.localeCompare(b.name));
-            break;
-          case "id":
-          default:
-            filtered.sort((a, b) => a.id.localeCompare(b.id));
-            break;
-        }
-
-        setFilteredFoods(filtered);
-      }
-    };
-
-    if (foods.length > 0) {
-      filterAndSort();
-    }
-  }, [foods, searchQuery, sortBy]);
 
   // Group foods by category
   const groupedFoods = filteredFoods.reduce((acc, food) => {
@@ -272,32 +204,9 @@ export default function BookMenu() {
         </div>
       </div>
 
-      {/* Search and Filters */}
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder={t("search.placeholder")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder={t("sort.title")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="id">ID</SelectItem>
-              <SelectItem value="price_asc">{t("sort.priceLow")}</SelectItem>
-              <SelectItem value="price_desc">{t("sort.priceHigh")}</SelectItem>
-              <SelectItem value="rating">{t("sort.rating")}</SelectItem>
-              <SelectItem value="name">{t("sort.name")}</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+    <h1 className="text-center text-4xl font-bold text-gray-900 my-8">
+        {"Amur Restaurant"}
+      </h1>
 
       {/* Food Sections */}
       <div className="container mx-auto px-4 pb-8">
@@ -327,95 +236,116 @@ export default function BookMenu() {
               {/* Food Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {categoryFoods.map((food, index) => {
+                  const imageUrl = getImageUrl(food.imageUrl);
+                  
                   return (
                     <Card
                       key={food.id}
                       className="overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:scale-105 bg-white"
                     >
-                      <div className="relative">
-                        <img
-                          src={getImageUrl(food.imageUrl)}
-                          alt={food.name}
-                          className="w-full h-48 object-cover cursor-pointer"
-                          onClick={() => handleViewDetails(food)}
-                          onError={(e) => {
-                            e.currentTarget.src =
-                              "/placeholder.svg?height=200&width=300";
-                          }}
-                        />
+                      {/* Image Section - Only render if image exists */}
+                      {imageUrl ? (
+                        <div className="relative h-50 w-full">
+                          <img
+                            src={imageUrl}
+                            alt={food.name}
+                            className="w-full h-full object-cover cursor-pointer"
+                            onClick={() => handleViewDetails(food)}
+                            onError={(e) => {
+                              // Hide image if it fails to load
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
 
-                        {/* View Details Button Overlay */}
-                        <Button
-                          size="icon"
-                          variant="secondary"
-                          className="absolute top-2 right-2 rounded-full bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => handleViewDetails(food)}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-
-                        {food.is_popular && (
-                          <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                            {t("seating.popular")}
-                          </Badge>
-                        )}
-                        {food.discount > 0 && (
-                          <Badge className="absolute top-2 right-2 bg-red-500">
-                            -{food.discount}%
-                          </Badge>
-                        )}
-                        {!food.isThere && (
-                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <Badge variant="secondary">
-                              {t("food.outOfStock")}
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
-
-                      <CardContent className="p-4">
-                        <h3 
-                          className="font-semibold text-lg mb-2 line-clamp-1 cursor-pointer hover:text-green-600"
-                          onClick={() => handleViewDetails(food)}
-                        >
-                          {food.name}
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                          {food.description}
-                        </p>
-
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-lg text-green-600">
-                              {formatPrice(food.price)}
-                            </span>
-                            {food.original_price > 0 && (
-                              <span className="text-sm text-gray-500 line-through">
-                                {formatPrice(food.original_price)}
+                          {/* Text Overlay on Image - Only bottom part */}
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent flex flex-col justify-end p-3 h-20">
+                            <h3 className="text-white font-semibold text-sm mb-1 line-clamp-2">
+                              {food.name}
+                            </h3>
+                            <div className="flex items-center justify-between">
+                              <span className="text-white font-bold text-lg">
+                                {formatPrice(food.price)}
                               </span>
+                              {food.original_price > 0 && (
+                                <span className="text-gray-300 text-sm line-through">
+                                  {formatPrice(food.original_price)}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* View Details Button Overlay */}
+                          <Button
+                            size="icon"
+                            variant="secondary"
+                            className="absolute top-2 right-2 rounded-full bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={() => handleViewDetails(food)}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+
+                          {food.is_popular && (
+                            <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                              {t("seating.popular")}
+                            </Badge>
+                          )}
+                          {food.discount > 0 && (
+                            <Badge className="absolute top-2 right-12 bg-red-500">
+                              -{food.discount}%
+                            </Badge>
+                          )}
+                          {!food.isThere && (
+                            <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                              <Badge variant="secondary">
+                                {t("food.outOfStock")}
+                              </Badge>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        // No image - show only text content - removed extra padding
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            {food.is_popular && (
+                              <Badge className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                {t("seating.popular")}
+                              </Badge>
+                            )}
+                            {food.discount > 0 && (
+                              <Badge className="bg-red-500">
+                                -{food.discount}%
+                              </Badge>
+                            )}
+                            {!food.isThere && (
+                              <Badge variant="secondary">
+                                {t("food.outOfStock")}
+                              </Badge>
                             )}
                           </div>
-                        </div>
 
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1">
-                            <span className="text-sm text-gray-600">
-                              {food.stock} {t("food.available")}
-                            </span>
-                          </div>
-                          
-                          {/* Batafsil ko'rish tugmasi */}
-                          <Button
-                            size="sm"
-                            variant="outline"
+                          <h3 
+                            className="font-semibold text-lg mb-2 line-clamp-1 cursor-pointer hover:text-green-600"
                             onClick={() => handleViewDetails(food)}
-                            className="border-green-600 text-green-600 hover:bg-green-50"
                           >
-                            <Eye className="h-4 w-4 mr-1" />
-                            {t("food.viewDetails")}
-                          </Button>
+                            {food.name}
+                          </h3>
+
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-lg text-green-600">
+                                {formatPrice(food.price)}
+                              </span>
+                              {food.original_price > 0 && (
+                                <span className="text-sm text-gray-500 line-through">
+                                  {formatPrice(food.original_price)}
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </CardContent>
+                      )}
+
+                      {/* Removed CardContent section completely to eliminate extra white space */}
                     </Card>
                   );
                 })}
