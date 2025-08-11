@@ -1,6 +1,7 @@
 import { useLanguage } from "@/hooks/use-language";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://uzjoylar-yoqj.onrender.com/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://backend.amur1.uz/api"
+// 0.0.0.0:8080
 
 // Get current language from localStorage (for non-hook contexts)
 const getCurrentLanguage = () => {
@@ -122,6 +123,8 @@ export interface Food {
   comment: string
   created_at: string
   updated_at: string
+ isGram?: boolean | null;
+
 }
 
 export interface Category {

@@ -43,10 +43,10 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
 
     if (imageUrl.includes("localhost") || imageUrl.startsWith("http")) {
       const urlPath = imageUrl.replace(/^https?:\/\/[^\/]+/, "");
-      return `https://uzjoylar-yoqj.onrender.com${urlPath}`;
+      return `https://backend.amur1.uz${urlPath}`;
     }
 
-    return `https://uzjoylar-yoqj.onrender.com${
+    return `https://backend.amur1.uz${
       imageUrl.startsWith("/") ? imageUrl : "/" + imageUrl
     }`;
   };
