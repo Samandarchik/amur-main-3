@@ -10,7 +10,7 @@ import Link from "next/link"
 export function HeroSection() {
   const { t } = useLanguage()
   const handlePhoneCall = () => {
-    window.location.href = "tel:+998901234567"
+    window.location.href = "tel:+998947000770"
   }
 
   const handleLocationClick = () => {
@@ -23,7 +23,7 @@ export function HeroSection() {
       <div
         className="absolute inset-0 opacity-100"
         style={{
-          backgroundImage: 'url(http://https://backend.amur1.uz/uploads/home_1750339092.png)',
+          backgroundImage: 'url(https://backend.amur1.uz/uploads/home_1750339092.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'

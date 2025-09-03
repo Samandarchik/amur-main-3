@@ -86,7 +86,6 @@ export default function BookMenu() {
         // Load categories
         const categoriesData = await api.getCategories();
         setCategories([
-           
           ...categoriesData,
         ]);
 
@@ -106,8 +105,6 @@ export default function BookMenu() {
 
     loadData();
   }, [language, t]);
-
-
 
   // Group foods by category
   const groupedFoods = filteredFoods.reduce((acc, food) => {
@@ -204,7 +201,7 @@ export default function BookMenu() {
         </div>
       </div>
 
-    <h1 className="text-center text-4xl font-bold text-gray-900 my-8">
+      <h1 className="text-center text-4xl font-bold text-gray-900 my-8">
         {"Amur Restaurant"}
       </h1>
 
@@ -241,111 +238,142 @@ export default function BookMenu() {
                   return (
                     <Card
                       key={food.id}
-                      className="overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:scale-105 bg-white"
+                      className="overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:scale-105 bg-white h-[400px] flex flex-col group"
                     >
-                      {/* Image Section - Only render if image exists */}
-                      {imageUrl ? (
-                        <div className="relative h-50 w-full">
-                          <img
-                            src={imageUrl}
-                            alt={food.name}
-                            className="w-full h-full object-cover cursor-pointer"
-                            onClick={() => handleViewDetails(food)}
-                            onError={(e) => {
-                              // Hide image if it fails to load
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
+                      {/* Top Section - Image or Placeholder */}
+                      <div className="relative h-48 w-full bg-gray-100 flex-shrink-0">
+                        {imageUrl ? (
+                          <>
+                            <img
+                              src={imageUrl}
+                              alt={food.name}
+                              className="w-full h-full object-cover cursor-pointer"
+                              onClick={() => handleViewDetails(food)}
+                              onError={(e) => {
+                                // Replace with placeholder when image fails
+                                const parent = e.currentTarget.parentElement;
+                                if (parent) {
+                                  parent.innerHTML = `
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                                      <div class="text-center text-gray-500">
+                                        <svg class="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                                          <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                        </svg>
+                                        <p class="text-sm">Rasm yo'q</p>
+                                      </div>
+                                    </div>
+                                  `;
+                                }
+                              }}
+                            />
 
-                          {/* Text Overlay on Image - Only bottom part */}
-                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent flex flex-col justify-end p-3 h-20">
-                            <h3 className="text-white font-semibold text-sm mb-1 line-clamp-2">
-                              {food.name}
-                            </h3>
-                            <div className="flex items-center justify-between">
-                              <span className="text-white font-bold text-lg">
-                                {formatPrice(food.price)}
-                              </span>
-                              {food.original_price > 0 && (
-                                <span className="text-gray-300 text-sm line-through">
-                                  {formatPrice(food.original_price)}
-                                </span>
+                            {/* Badges on Image */}
+                            <div className="absolute top-2 left-2 flex flex-col gap-1">
+                              {food.is_popular && (
+                                <Badge className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                  {t("seating.popular")}
+                                </Badge>
+                              )}
+                              {food.discount > 0 && (
+                                <Badge className="bg-red-500 text-xs">
+                                  -{food.discount}%
+                                </Badge>
                               )}
                             </div>
-                          </div>
 
-                          {/* View Details Button Overlay */}
-                          <Button
-                            size="icon"
-                            variant="secondary"
-                            className="absolute top-2 right-2 rounded-full bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => handleViewDetails(food)}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
+                           
 
-                          {food.is_popular && (
-                            <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                              {t("seating.popular")}
-                            </Badge>
-                          )}
-                          {food.discount > 0 && (
-                            <Badge className="absolute top-2 right-12 bg-red-500">
-                              -{food.discount}%
-                            </Badge>
-                          )}
-                          {!food.isThere && (
-                            <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
-                              <Badge variant="secondary">
-                                {t("food.outOfStock")}
-                              </Badge>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        // No image - show only text content - removed extra padding
-                        <div className="p-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            {food.is_popular && (
-                              <Badge className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                                {t("seating.popular")}
-                              </Badge>
-                            )}
-                            {food.discount > 0 && (
-                              <Badge className="bg-red-500">
-                                -{food.discount}%
-                              </Badge>
-                            )}
+                            {/* Stock Status Overlay */}
                             {!food.isThere && (
-                              <Badge variant="secondary">
-                                {t("food.outOfStock")}
-                              </Badge>
+                              <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                                <Badge variant="secondary">
+                                  {t("food.outOfStock")}
+                                </Badge>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          // Placeholder for no image
+                          <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                            <div className="text-center text-gray-500">
+                              <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                              </svg>
+                              <p className="text-sm">Rasm yo'q</p>
+                            </div>
+                            
+                            {/* Badges for no-image cards */}
+                            <div className="absolute top-2 left-2 flex flex-col gap-1">
+                              {food.is_popular && (
+                                <Badge className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                  {t("seating.popular")}
+                                </Badge>
+                              )}
+                              {food.discount > 0 && (
+                                <Badge className="bg-red-500 text-xs">
+                                  -{food.discount}%
+                                </Badge>
+                              )}
+                            </div>
+
+                         
+
+                            {/* Stock Status for no-image cards */}
+                            {!food.isThere && (
+                              <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                                <Badge variant="secondary">
+                                  {t("food.outOfStock")}
+                                </Badge>
+                              </div>
                             )}
                           </div>
+                        )}
+                      </div>
 
+                      {/* Bottom Section - Text Content */}
+                      <CardContent className="p-4 flex-1 flex flex-col justify-between">
+                        <div className="flex-1">
                           <h3 
-                            className="font-semibold text-lg mb-2 line-clamp-1 cursor-pointer hover:text-green-600"
+                            className="font-semibold text-lg mb-2 line-clamp-2 cursor-pointer hover:text-green-600 transition-colors"
                             onClick={() => handleViewDetails(food)}
+                            title={food.name}
                           >
                             {food.name}
                           </h3>
-
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="font-bold text-lg text-green-600">
-                                {formatPrice(food.price)}
-                              </span>
-                              {food.original_price > 0 && (
-                                <span className="text-sm text-gray-500 line-through">
-                                  {formatPrice(food.original_price)}
-                                </span>
-                              )}
-                            </div>
-                          </div>
+                          
+                          {/* Description if available */}
+                          {food.description && (
+                            <p className="text-sm text-gray-600 mb-3 line-clamp-2" title={food.description}>
+                              {food.description}
+                            </p>
+                          )}
                         </div>
-                      )}
 
-                      {/* Removed CardContent section completely to eliminate extra white space */}
+                        {/* Price Section - Always at bottom */}
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                          <div className="flex flex-col">
+                            <span className="font-bold text-lg text-green-600">
+                              {formatPrice(food.price)}
+                            </span>
+                            {food.original_price > 0 && food.original_price !== food.price && (
+                              <span className="text-sm text-gray-500 line-through">
+                                {formatPrice(food.original_price)}
+                              </span>
+                            )}
+                          </div>
+                          
+                          {/* Action Button */}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleViewDetails(food)}
+                            className="hover:bg-green-50 hover:border-green-500 transition-colors"
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            Ko'rish
+                          </Button>
+                        </div>
+                      </CardContent>
                     </Card>
                   );
                 })}

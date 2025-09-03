@@ -89,18 +89,16 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
     }
   };
 
-
-
   // Stock tugaganligi yoki yetarli emasligi haqida xabar
   const getStockMessage = () => {
     if (!food) return "";
     
     const remainingStock = food.stock - quantity;
     if (remainingStock === 0 && quantity > 0) {
-      return t("food.allStockInCart") || "All available items are in your cart";
+      return t("food.allStockInCart");
     }
     if (remainingStock > 0 && remainingStock <= 3) {
-      return `${t("food.onlyLeft") || "Only"} ${remainingStock} ${t("food.itemsLeft") || "items left"}`;
+      return t("food.onlyLeft", { count: remainingStock }) + " " + t("food.itemsLeft");
     }
     return "";
   };
@@ -191,7 +189,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
         </div>
 
         {/* Scrollable Content */}
-        <div className="overflow-y-auto max-h-[60vh] px-6 py-6 space-y-6">
+        <div className="overflow-y-auto max-h-[60vh] px-6 pt-6 pb-[150px] space-y-6">
           {/* Title and Rating */}
           <div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
@@ -203,7 +201,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
                   <span className="font-semibold">{food.stock} {t("food.available")}</span>
                   {quantity > 0 && (
                     <span className="text-sm text-gray-500">
-                      ({food.stock - quantity} {t("food.remaining") || "remaining"})
+                      ({food.stock - quantity} {t("food.remaining")})
                     </span>
                   )}
                 </div>
@@ -242,7 +240,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
           <div>
             <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
               <ChefHat className="h-5 w-5 text-gray-600" />
-              Description
+              {t("food.description")}
             </h3>
             <p className="text-gray-700 leading-relaxed">
               {food.description}
@@ -254,7 +252,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-gray-500" />
               <span className="text-gray-700">
-                {food.preparation_time} min
+                {food.preparation_time} {t("food.minutes")}
               </span>
             </div>
           </div>
@@ -263,7 +261,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
           {food.ingredients && food.ingredients[language as keyof typeof food.ingredients]?.length > 0 && (
             <div>
               <h3 className="font-semibold text-lg mb-2">
-                Ingredients
+                {t("food.ingredients")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {food.ingredients[language as keyof typeof food.ingredients].map((ingredient, index) => (
@@ -280,7 +278,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
             <div>
               <h3 className="font-semibold text-lg mb-2 flex items-center gap-2 text-orange-600">
                 <AlertTriangle className="h-5 w-5" />
-                Allergens
+                {t("food.allergens")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {food.allergens[language as keyof typeof food.allergens].map((allergen, index) => (
@@ -296,7 +294,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
           {food.comment && (
             <div>
               <h3 className="font-semibold text-lg mb-2">
-                Chef's Note
+                {t("food.chefsNote")}
               </h3>
               <p className="text-gray-700 italic bg-gray-50 p-4 rounded-lg">
                 "{food.comment}"
@@ -315,7 +313,7 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
                 onClick={handleAddItem}
               >
                 {food.stock === 0 ? 
-                  (t("food.outOfStock") || "Out of Stock") : 
+                  t("food.outOfStock") : 
                   `${t("food.addToCart")} • ${formatPrice(food.price)}`
                 }
               </Button>
@@ -348,11 +346,11 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
                     {formatPrice(food.price * quantity)}
                   </div>
                   <div className="text-sm text-gray-500">
-                    Total for {quantity} items
+                    {t("food.totalFor", { count: quantity })}
                   </div>
                   {isMaxQuantityReached && (
                     <div className="text-xs text-amber-600 font-medium">
-                      {t("food.maxQuantityReached") || "Maximum quantity reached"}
+                      {t("food.maxQuantityReached")}
                     </div>
                   )}
                 </div>

@@ -13,7 +13,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Amur Restorani - O'zbekistonning eng mazali taomları",
   description: "Amur restoranidan onlayn buyurtma bering. Tez yetkazib berish, sifatli taomlar va qulay narxlar.",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({

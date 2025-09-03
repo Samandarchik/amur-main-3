@@ -35,9 +35,8 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
       return `https://backend.amur1.uz${urlPath}`;
     }
 
-    return `https://backend.amur1.uz${
-      imageUrl.startsWith("/") ? imageUrl : "/" + imageUrl
-    }`;
+    return `https://backend.amur1.uz${imageUrl.startsWith("/") ? imageUrl : "/" + imageUrl
+      }`;
   };
 
   const formatPrice = (price: number) => {
@@ -129,37 +128,37 @@ export function FoodDetailModal({ food, isOpen, onClose }: FoodDetailModalProps)
             {food.name}
           </h1>
 
-       {/* Ingredients */}
-{food.ingredients && (
-  <div className="mb-6">
-    <div className="flex flex-wrap gap-2 text-lg text-white/90">
-      {food.ingredients[language as keyof typeof food.ingredients] &&
-      food.ingredients[language as keyof typeof food.ingredients].length > 0 ? (
-        food.ingredients[language as keyof typeof food.ingredients].map((ingredient, index, array) => (
-          <span key={index}>
-            {ingredient}
-            {index < array.length - 1 && <span className="mx-2 text-white/60">•</span>}
-          </span>
-        ))
-      ) : (
-        Object.values(food.ingredients).flat().filter(Boolean).length > 0 && (
-          Object.values(food.ingredients).flat().filter(Boolean).map((ingredient, index, array) => (
-            <span key={index}>
-              {ingredient}
-              {index < array.length - 1 && <span className="mx-2 text-white/60">•</span>}
-            </span>
-          ))
-        )
-      )}
+          {/* Ingredients */}
+          {food.ingredients && (
+            <div className="mb-6">
+              <div className="flex flex-wrap gap-2 text-lg text-white/90">
+                {food.ingredients[language as keyof typeof food.ingredients] &&
+                  food.ingredients[language as keyof typeof food.ingredients].length > 0 ? (
+                  food.ingredients[language as keyof typeof food.ingredients].map((ingredient, index, array) => (
+                    <span key={index}>
+                      {ingredient}
+                      {index < array.length - 1 && <span className="mx-2 text-white/60">•</span>}
+                    </span>
+                  ))
+                ) : (
+                  Object.values(food.ingredients).flat().filter(Boolean).length > 0 && (
+                    Object.values(food.ingredients).flat().filter(Boolean).map((ingredient, index, array) => (
+                      <span key={index}>
+                        {ingredient}
+                        {index < array.length - 1 && <span className="mx-2 text-white/60">•</span>}
+                      </span>
+                    ))
+                  )
+                )}
 
-      {/* Times oxirida */}
-      <span className="flex items-center gap-2 ml-4 text-white/80">
-        <Clock className="h-5 w-5" />
-        <span>{food.preparation_time} min</span>
-      </span>
-    </div>
-  </div>
-)}
+                {/* Times oxirida */}
+                <span className="flex items-center gap-2 ml-4 text-white/80">
+                  <Clock className="h-5 w-5" />
+                  <span>{food.preparation_time} min</span>
+                </span>
+              </div>
+            </div>
+          )}
 
 
           {/* Back Button */}

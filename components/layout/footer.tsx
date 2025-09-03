@@ -7,7 +7,7 @@ import { useLanguage } from "@/hooks/use-language"
 export function Footer() {
   const {t} = useLanguage()
   const handlePhoneCall = () => {
-    window.location.href = "tel:+998901234567"
+    window.location.href = "tel:+998947000770"
   }
 
   return (

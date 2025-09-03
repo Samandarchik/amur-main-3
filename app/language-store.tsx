@@ -106,6 +106,9 @@ const translations = {
     "food.lowStock": "Kam qoldi",
     "food.outOfStock": "Tugagan",
     "food.rating": "Reyting",
+    "food.description": "Ta'rif",
+    "food.ingredients": "Ingredientlar",
+    "food.minutes": "daqiqa",
 
     // Search & Sort
     "search.placeholder": "Taom qidirish...",
@@ -127,6 +130,7 @@ const translations = {
     "cart.subtotal": "Oraliq jami",
     "cart.delivery": "Yetkazib berish",
     "cart.tax": "Soliq",
+    "cart.add": "Savatga qo'shish",
 
     // Orders
     "orders.title": "Buyurtmalar",
@@ -342,6 +346,9 @@ const translations = {
     "food.lowStock": "Мало осталось",
     "food.outOfStock": "Нет в наличии",
     "food.rating": "Рейтинг",
+    "food.description": "Описание",
+    "food.ingredients": "Ингредиенты",
+    "food.minutes": "мин",
 
     // Search & Sort
     "search.placeholder": "Поиск блюд...",
@@ -363,6 +370,8 @@ const translations = {
     "cart.subtotal": "Промежуточный итог",
     "cart.delivery": "Доставка",
     "cart.tax": "Налог",
+    "cart.add": "Добавить в корзину",
+
 
     // Orders
     "orders.title": "Заказы",
@@ -580,6 +589,9 @@ const translations = {
     "food.lowStock": "Low Stock",
     "food.outOfStock": "Out of Stock",
     "food.rating": "Rating",
+    "food.description": "Description",
+    "food.ingredients": "Ingredients",
+    "food.minutes": "min",
 
     // Search & Sort
     "search.placeholder": "Search foods...",
@@ -601,6 +613,7 @@ const translations = {
     "cart.subtotal": "Subtotal",
     "cart.delivery": "Delivery",
     "cart.tax": "Tax",
+    "cart.add": "Add to cart",
 
     // Orders
     "orders.title": "Orders",

@@ -51,7 +51,7 @@ interface OrderData {
 
 const mockOrderData: OrderData = {
   order_id: "2025-06-16-1",
-  user_number: "998901234567",
+  user_number: "998947000770",
   user_name: "John Doe",
   foods: [
     {
@@ -81,7 +81,7 @@ const mockOrderData: OrderData = {
   delivery_info: {
     type: "delivery",
     address: "Samarqand shahar, Kaftarcha",
-    phone: "+998901234567",
+    phone: "+998947000770",
     latitude: 41.2995,
     longitude: 69.2401,
   },

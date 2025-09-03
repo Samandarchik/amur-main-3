@@ -13,7 +13,7 @@ const seatingAreas = [
     capacity: "seating.zal1.capacity",
     features: ["seating.features.ac", "seating.features.wifi", "seating.features.music"],
     imageUrl:
-      "https://firebasestorage.googleapis.com/v0/b/amur-restoran.firebasestorage.app/o/amur.jpg?alt=media&token=8e3d1e77-0037-4b14-9003-88d6e5a07dd1",
+      "/zal1.jpg",
     rating: 4.7,
     reviewCount: 23,
     isPopular: true,
@@ -26,7 +26,7 @@ const seatingAreas = [
     capacity: "seating.zal2.capacity",
     features: ["seating.features.projector", "seating.features.ac", "seating.features.special"],
     imageUrl:
-      "https://firebasestorage.googleapis.com/v0/b/amur-restoran.firebasestorage.app/o/amur.jpg?alt=media&token=8e3d1e77-0037-4b14-9003-88d6e5a07dd1",
+      "/zal1.jpg",
     rating: 4.5,
     reviewCount: 18,
     isPopular: false,
@@ -39,7 +39,7 @@ const seatingAreas = [
     capacity: "seating.terrace.capacity",
     features: ["seating.features.outdoor", "seating.features.view", "seating.features.bbq"],
     imageUrl:
-      "https://firebasestorage.googleapis.com/v0/b/amur-restoran.firebasestorage.app/o/amur.jpg?alt=media&token=8e3d1e77-0037-4b14-9003-88d6e5a07dd1",
+      "/zal1.jpg",
     rating: 4.8,
     reviewCount: 31,
     isPopular: true,
@@ -52,7 +52,7 @@ const seatingAreas = [
     capacity: "seating.vip.capacity",
     features: ["seating.features.private", "seating.features.premium", "seating.features.menu"],
     imageUrl:
-      "https://firebasestorage.googleapis.com/v0/b/amur-restoran.firebasestorage.app/o/amur.jpg?alt=media&token=8e3d1e77-0037-4b14-9003-88d6e5a07dd1",
+      "/zal1.jpg",
     rating: 4.9,
     reviewCount: 12,
     isPopular: false,
